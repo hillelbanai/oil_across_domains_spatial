@@ -1,0 +1,206 @@
+
+    img {
+        height: 250px;
+        width: 200px;
+    }
+
+    p {
+        padding: 10px
+    }
+
+    img.fullscreen {
+        height: 150px;
+        width: 526px;
+    }
+
+    :root {
+        --top_middle: 0px;
+        --left_middle: 0px;
+
+        --top_a: 0px;
+        --left_a: 0px;
+        --top_b: 0px;
+        --left_b: 0px;
+        --top_c: 0px;
+        --left_c: 0px;
+
+
+        --top_d: 0px;
+        --right_d: 0px;
+        --top_e: 0px;
+        --right_e: 0px;
+        --top_f: 0px;
+        --right_f: 0px;
+
+        --bottom_g: 0px;
+        --right_g: 0px;
+        --bottom_h: 0px;
+        --right_h: 0px;
+        --bottom_i: 0px;
+        --right_i: 0px;
+
+
+        --bottom_j: 0px;
+        --left_j: 0px;
+        --bottom_k: 0px;
+        --left_k: 0px;
+        --bottom_l: 0px;
+        --left_l: 0px;
+
+       --upper1: 0px;
+       --upper2: 0px;
+       --upper3: 0px;
+
+       --lower1: 0px;
+       --lower2: 0px;
+       --lower3: 0px;
+
+        --left_location: 0px;
+        --middle_left_location: 0px;
+        --middle_right_location: 0px;
+        --right_location: 0px;
+        --top_location: 0px;
+        --top_reward: 0px;
+        --left_reward: 0px;
+    }
+
+    .white-content {
+        max-width: 950px;
+        width: 100%;
+        padding: 20px;
+        margin: auto;
+        box-sizing: border-box;
+        overflow: auto;
+        background: rgba(255, 255, 255, 0.9); /* Semi-transparent background */
+        border-radius: 10px; /* Rounded corners */
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Optional: Add a slight shadow */
+    }
+    
+    .color_blind {
+        height: 300px;
+        width: 300px;
+    }
+
+    .reward {
+
+        margin-left: auto;
+        margin-right: auto;
+        height: 110px;
+        width: 100px;
+        position: absolute;
+        top: var(--top_reward);
+        left: var(--left_reward);
+    }
+
+    .group {
+        height: 135px;
+        width: 487px;
+    }
+
+    img.state_icon {
+        position: fixed;
+        height: 120px;
+        width: 120px;
+        top: var(--top_state);
+        left: 50%;
+        transform: translateX(-50%);
+        /* left: var(--left_state_icon); */
+    }
+
+    img.state_location {
+        position: fixed;
+        height: 120px;
+        width: 120px;
+        top: var(--top_state);
+        left: 50%;
+        transform: translateX(-50%);
+        /* left: var(--left_state_location); */
+    }
+
+    .example {
+        height: 135px;
+        width: 217px;
+    }
+    
+    .exampleSlot {
+        height: 160px;
+        width: 152px;
+        margin-right: 5px;
+    }
+
+    .exampleIcon {
+        height: 100px;
+        width: 800px;
+    }
+
+    .block_example {
+        height: 200px;
+        width: 200px;
+    }
+
+    .examplelocation {
+        height: 200px;
+        width: 200px;
+    }
+
+    .example {
+        height: 200px;
+        width: 977px;
+        margin-right: 5px;
+    }
+
+    .exampleLoc {
+        height: 223px;
+        width: 960px;
+    }
+
+    .exampleReward {
+        height: 336px;
+        width: 960px;
+    }
+
+    .exampleState {
+        height: 260px;
+        width: 780px;
+    }
+    .example_keyboard {
+        height: 350px;
+        width: 472px;
+    }
+    .example_state_only {
+        height: 130px;
+        width: 300px;
+    }
+
+    img.location_left {
+        position: fixed;
+        height: 200px;
+        width: 200px;
+        left: var(--left_location);
+        top: var(--top_location);
+    }
+
+    img.location_right {
+        position: fixed;
+        height: 200px;
+        width: 200px;
+        right: var(--right_location);
+        top: var(--top_location);
+    }
+
+    img.location_middle_left {
+        position: fixed;
+        height: 200px;
+        width: 200px;
+        left: var(--middle_left_location);
+        top: var(--top_location);
+    }
+
+    img.location_middle_right {
+        position: fixed;
+        height: 200px;
+        width: 200px;
+        right: var(--middle_right_location);
+        top: var(--top_location);
+    }
+    

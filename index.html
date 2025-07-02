@@ -1,0 +1,1314 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Game</title>
+
+    <!-- online run
+    <script src="lib/vendors/jspsych-7.1.2/jspsych.js"></script>
+    <script src="lib/vendors/jspsych-7.1.2/plugin-html-keyboard-response.js"></script>
+    <script src="lib/vendors/jspsych-7.1.2/plugin-html-button-response.js"></script>
+    <script src="lib/vendors/jspsych-7.1.2/plugin-preload.js"></script>
+    <script src="lib/vendors/jspsych-7.1.2/plugin-fullscreen.js"></script>
+    <script src="lib/vendors/jspsych-7.1.2/plugin-instructions.js"></script>
+    <script src="lib/vendors/jspsych-7.1.2/plugin-survey-likert.js"></script>
+    <script src="lib/vendors/jspsych-7.1.2/plugin-survey-text.js"></script>
+    <script src="lib/vendors/jspsych-7.1.2/plugin-survey-multi-choice.js"></script>
+    <link rel="stylesheet" href="lib/vendors/jspsych-7.1.2/jspsych.css">
+    <link href="./css/my_exp.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="lib/vendors/jquery-2.2.0.min.js"></script>
+<script type="text/javascript" src="jspsych/jspsych-7-pavlovia-2021.12.js"></script>
+<script src="https://www.google.com/recaptcha/api.js" async defer></script>-->
+
+    <!-- local run-->
+    <script src="jspsych/dist/jspsych.js"></script>
+    <script src="jspsych/dist/plugin-html-keyboard-response.js"></script>
+    <script src="jspsych/dist/plugin-html-button-response.js"></script>
+    <script src="jspsych/dist/plugin-preload.js"></script>
+    <script src="jspsych/dist/plugin-instructions.js"></script>
+    <script src="jspsych/dist/plugin-survey-likert.js"></script>
+    <script src="jspsych/dist/plugin-survey-text.js"></script>
+    <script src="jspsych/dist/plugin-survey-multi-choice.js"></script>
+    <script src="jspsych/dist/plugin-fullscreen.js"></script>
+    <script src="jspsych/dist/plugin-html-slider-response.js"></script>
+    <link href="jspsych/dist/jspsych.css" rel="stylesheet" type="text/css" />
+    <link href="css/my_exp.css" rel="stylesheet" type="text/css" />
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+</head>
+
+<body>
+    <script>
+        /* initialize jsPsych */
+        var experimentEnded = false;
+        var jsPsych = initJsPsych({
+            on_interaction_data_update: function (data) {
+                console.log(JSON.stringify(data))
+                if ((data.event == 'blur') & experimentEnded == false) {
+                    jsPsych.pauseExperiment();
+                    alert("The experiment is paused. If necessary please return to fullscreen by pressing F11 on your keyboard before pressing OK. Note that you will not be paid if you are not completely engaged with the experiment.");
+                    jsPsych.data.addDataToLastTrial(data);
+                }
+                if (data.event == 'focus' & experimentEnded == false) {
+                    jsPsych.resumeExperiment();
+                }
+
+            },
+            on_finish: function () {
+                experimentEnded = true
+
+            }
+        });
+        /*this defines the css properties according to the window_screen_size*/
+        var root = document.documentElement;
+        //---------------------------------------------------------------------------------------------
+        root.style.setProperty('--left_location', window.screen.width / 2 - 540 + "px");
+        root.style.setProperty('--right_location', window.screen.width / 2 - 540 + "px");
+        root.style.setProperty('--middle_left_location', window.screen.width / 2 - 250 + "px");
+        root.style.setProperty('--middle_right_location', window.screen.width / 2 - 250 + "px");
+        root.style.setProperty('--top_location', window.screen.height / 2 - 100 + "px");
+
+        root.style.setProperty('--left_state_icon', window.screen.width / 2 - 150 + "px");
+
+        root.style.setProperty('--left_state_location', window.screen.width / 2 - 230 + "px");
+        root.style.setProperty('--top_state', window.screen.height / 2 - 300 + "px");
+
+        root.style.setProperty('--top_reward', window.screen.height / 2 + 150 + "px");
+        root.style.setProperty('--left_reward', window.screen.width / 2 - 50 + "px");
+
+        // // capture info from Prolific
+        // var subject_id = jsPsych.data.getURLVariable('PROLIFIC_PID');
+        // // Check if Prolific_PID is undefined or invalid
+        // if (typeof subject_id === "undefined" || subject_id === null || subject_id.trim() === "") {
+        //     // Prompt the user to input their Prolific ID
+        //     subject_id = prompt(
+        //         "Your Prolific ID was not detected. Please enter your Prolific ID to proceed:",
+        //         ""
+        //     );
+
+        //     // If they leave the prompt empty, assign a default value or repeat the prompt
+        //     while (!subject_id || subject_id.trim() === "") {
+        //         subject_id = prompt(
+        //             "Your Prolific ID is required to proceed. Please enter your Prolific ID:"
+        //         );
+        //     }
+        // }
+        // jsPsych.data.addProperties({
+        //     subject_id: subject_id
+        // });
+
+        // skip Prolific entirely when running locally
+        var subject_id = 'local';
+        jsPsych.data.addProperties({ subject_id: subject_id });
+
+
+        /*---------------------------------------------------- 
+        Location Game Starts
+        ------------------------------------------------------*/
+        var timeline = [];
+
+        /*init connection with pavlovia.org
+        var pavlovia_init = {
+            type: jsPsychPavlovia,
+            command: "init"
+
+        };
+        timeline.push(pavlovia_init);*/
+
+        /*full screen */
+        var enter_fullscreen = {
+            type: jsPsychFullscreen,
+            fullscreen_mode: true,
+            message: '<p>The experiment will get into fullscreen mode once you click the button below. <br><br> <b>Before continuing we want you to check that:</b> <br> 1. Your browser is on 100% zoom <br>2. Your keyboard is set to the English language</p>'
+            , button_label: "My browser is on 100% zoom and my keyboard is set to English. Let's start!"
+        }
+
+        timeline.push(enter_fullscreen)
+
+        /*---------------------------------------------------- 
+        Define images
+        ------------------------------------------------------*/
+
+        var instructions_images = ['images/slot_machine.png',
+            'images/examples/example_locations.png',
+            'images/examples/example_icons.png',
+            'images/examples/example1.png',
+            'images/examples/example2.png',
+            'images/examples/example_choice.png',
+            'images/examples/example_reward.png',
+            'images/examples/example_unrewarded.png',
+            'images/examples/states_example.png',
+            'images/examples/example_state_machine.png',
+            'images/examples/example_state_icon.png']
+
+        var keyboard_images = ['images/examples/new_keyboard_vis.png']
+
+        var practice_deck = ['images/new_practice/1.png', 'images/new_practice/2.png', 'images/new_practice/3.png', 'images/new_practice/4.png']
+
+        var test_deck = ['images/new_test/1.png', 'images/new_test/2.png', 'images/new_test/3.png', 'images/new_test/4.png']
+
+        var test_deck_locations = ['images/test/blue.png', 'images/test/red.png', 'images/test/green.png', 'images/test/yellow.png']
+
+        var reward_images = ['images/zero_coins.png', 'images/won1-no-back1.png']
+
+        var background = 'images/new_background.png'
+
+        var filled_background = 'images/filled_background.png'
+
+        var states = ['images/state/Location.png', 'images/state/Icon.png'];
+
+        // Color blindness test images
+        var color_blindness_image = ['images/color_blindness/1.png', 'images/color_blindness/2.png'];
+
+        // Map keys to positions
+        const key_to_index = { 's': 0, 'f': 1, 'h': 2, 'k': 3 };
+
+        // Add mapping between location positions and FB_matrix rows
+        var location_to_fb_row = [0, 1, 2, 3];  // Will be shuffled at start of experiment
+
+        // Function to convert icon index to color name
+        function getIconColorName(iconIndex) {
+            const colorNames = ['blue', 'red', 'green', 'yellow'];
+            return colorNames[iconIndex] || 'unknown';
+        }
+
+        wrong_key_location = `<div style="
+        font-size: 20px; 
+        position: absolute; 
+        top: 50%; 
+        left: 50%; 
+        transform: translate(-50%, -50%); 
+        text-align: center;">
+        Please choose one of the available options!<br><br><br>
+        <b>S: left</b>, <b>F: middle-left</b>, <b>H: middle-right</b>, <b>K: right</b>
+        </div>`;
+
+        wrong_key_icon = `<div style="
+        font-size: 20px; 
+        position: absolute; 
+        top: 50%; 
+        left: 50%; 
+        transform: translate(-50%, -50%); 
+        text-align: center;">
+        Please choose one of the available options!<br><br><br>
+        <b>F: middle-left</b>, <b>H: middle-right</b>
+        </div>`;
+
+        too_slow = `<div style="font-size:30px; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);"> Please respond faster!</div>`
+
+        //preload
+        var preload = {
+            type: jsPsychPreload,
+            images: [instructions_images, keyboard_images, practice_deck, test_deck_locations, reward_images, background, filled_background, states, color_blindness_image]
+        };
+
+        timeline.push(preload)
+
+        //         //color_blindness
+        var test_color_blindness = {
+            type: jsPsychHtmlButtonResponse,
+            stimulus: "<p>Before we begin, we need to determine if you have color blindness.</p>",
+            choices: ["Start"]
+        }
+        var color_blindness_options = ["1", "2", "3", "4", "5", "6", "7", "8", "9"];
+
+        var color_blindness = {
+            type: jsPsychSurveyMultiChoice,
+            questions: [
+                { prompt: function () { return "<img class='color_blind' src=" + color_blindness_image[0] + ">" }, name: 'color_blind1', correct: '3', options: color_blindness_options, required: true },
+                { prompt: function () { return "<img class='color_blind' src=" + color_blindness_image[1] + ">" }, name: 'color_blind2', correct: '5', options: color_blindness_options, required: true }
+            ],
+            css_classes: ['white-content']
+        }
+        var if_color_blind = {
+            type: jsPsychHtmlButtonResponse,
+            stimulus: "<p>Sorry. You made a mistake.<br>"
+                + "Please return the study and write us a message in Prolific so we can compensate you for your time.<br>"
+                + "Thank you for your understanding!</p>",
+            choices: ["Click here to return to Prolific"],
+            on_finish: function () {
+                // Open Prolific in a new tab
+                window.open("https://www.prolific.co/", "_blank");
+                // End the experiment immediately
+                jsPsych.endExperiment("Experiment ended due to screening criteria. Please reach out in Prolific to get your payment");
+            }
+        };
+
+        var to_repeat_color_blind;
+        var check_answers_color_blindness = {
+            timeline: [if_color_blind],
+            conditional_function: function () {
+                // get the data from the previous trial,
+                // and check which key was pressed
+                to_repeat_color_blind = false;
+                var responses_to_test = jsPsych.data.getLastTrialData().trials[0].response
+                for (i = 0; i < color_blindness.questions.length; i++) {
+                    current_name = color_blindness.questions[i].name;
+                    current_correct = color_blindness.questions[i].correct
+                    if (current_correct != responses_to_test[current_name]) {
+                        to_repeat_color_blind = true;
+                        return to_repeat_color_blind
+                    }
+                    else {
+                        to_repeat_color_blind = false;
+
+                    }
+                }
+                return to_repeat_color_blind
+            }
+        }
+        finish_color_blind =
+        {
+            type: jsPsychHtmlButtonResponse,
+            stimulus: "<p>Great! You can now continue to the next part of the study.</p>",
+            choices: ["Continue"]
+        }
+        var color_blind_loop = {
+            timeline: [test_color_blindness, color_blindness, check_answers_color_blindness],
+            loop_function: function () {
+                if (to_repeat_color_blind == true) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+        }
+        timeline.push(color_blind_loop)
+
+        /*----------------------------------------------------
+        Define game-related settings
+        ------------------------------------------------------*/
+        var background_locs;
+        var invalid = false;
+        var invalid_from_all_keyboard = false;
+        var location_first_icon;
+        var location_second_icon;
+        var prob_reward_selected;
+        var sum_of_rewards = 0;
+
+        var locationBlockCount = 0;
+        var iconBlockCount = 0;
+
+        var block_icons;       // will hold the two icon‐indices for the current block
+        var remaining_icons;   // the other two, held over to block 2
+
+        var last_choice;
+
+        var icon_offered_1, icon_offered_2,
+            location_offered_1, location_offered_2,
+            Prob_reward_relevant_1,
+            Prob_reward_relevant_2,
+            Prob_reward_relevant_3,
+            Prob_reward_relevant_4,
+            respond_faster_message,
+            wrong_key_selected;
+
+        var FB_matrix1 = []; //first option for random walk
+        FB_matrix1[0] = [0.328, 0.351, 0.321, 0.315, 0.318, 0.331, 0.292, 0.298, 0.326, 0.297, 0.299, 0.325, 0.326, 0.351, 0.388, 0.333, 0.305, 0.285, 0.266, 0.278, 0.265, 0.275, 0.269, 0.233, 0.232, 0.235, 0.225, 0.225, 0.254, 0.228, 0.263, 0.263, 0.229, 0.256, 0.257, 0.22, 0.243, 0.219, 0.199, 0.199, 0.171, 0.163, 0.17, 0.179, 0.206, 0.222, 0.224, 0.232, 0.217, 0.195, 0.205, 0.187, 0.167, 0.161, 0.15, 0.173, 0.15, 0.15, 0.15, 0.167, 0.15, 0.168, 0.158, 0.15, 0.159, 0.189, 0.15, 0.15, 0.161, 0.15, 0.183, 0.218, 0.217, 0.22, 0.266, 0.273, 0.27, 0.233, 0.209, 0.248, 0.239, 0.233, 0.224, 0.244, 0.211, 0.186, 0.153, 0.153, 0.15, 0.151, 0.15, 0.163, 0.153, 0.16, 0.15, 0.161, 0.163, 0.162, 0.171, 0.15, 0.153, 0.172, 0.177, 0.177, 0.177, 0.201, 0.195, 0.193, 0.212, 0.188, 0.209, 0.207, 0.212, 0.208, 0.212, 0.229, 0.212, 0.221, 0.202, 0.231, 0.247, 0.239, 0.241, 0.232, 0.246, 0.24, 0.24, 0.271, 0.274, 0.306, 0.314, 0.316, 0.322, 0.367, 0.354, 0.357, 0.396, 0.377, 0.368, 0.379, 0.362, 0.37, 0.364, 0.369, 0.392, 0.42, 0.442, 0.423, 0.431, 0.447, 0.438, 0.434, 0.451, 0.461, 0.491, 0.469, 0.483, 0.448, 0.413, 0.416, 0.426, 0.448, 0.427, 0.419, 0.43, 0.449, 0.434, 0.426, 0.42, 0.411, 0.406, 0.391, 0.388, 0.345, 0.313, 0.316, 0.315, 0.293, 0.28, 0.288, 0.304, 0.319, 0.334, 0.311, 0.275, 0.288, 0.268, 0.249, 0.265, 0.247, 0.206, 0.22, 0.229, 0.237, 0.236, 0.244, 0.27, 0.284, 0.282, 0.26]
+        FB_matrix1[1] = [0.404, 0.366, 0.391, 0.412, 0.371, 0.359, 0.347, 0.367, 0.348, 0.366, 0.387, 0.39, 0.38, 0.388, 0.395, 0.386, 0.403, 0.397, 0.404, 0.378, 0.376, 0.337, 0.334, 0.313, 0.345, 0.306, 0.269, 0.286, 0.263, 0.25, 0.293, 0.258, 0.262, 0.252, 0.246, 0.238, 0.292, 0.276, 0.276, 0.27, 0.281, 0.303, 0.322, 0.34, 0.339, 0.331, 0.311, 0.309, 0.306, 0.284, 0.272, 0.304, 0.295, 0.315, 0.327, 0.326, 0.311, 0.292, 0.28, 0.261, 0.259, 0.24, 0.255, 0.248, 0.246, 0.21, 0.236, 0.23, 0.244, 0.236, 0.21, 0.207, 0.214, 0.214, 0.198, 0.226, 0.202, 0.214, 0.185, 0.187, 0.203, 0.189, 0.19, 0.188, 0.185, 0.177, 0.15, 0.17, 0.216, 0.247, 0.235, 0.215, 0.19, 0.167, 0.188, 0.172, 0.17, 0.189, 0.202, 0.18, 0.196, 0.204, 0.225, 0.266, 0.253, 0.278, 0.305, 0.31, 0.283, 0.29, 0.289, 0.299, 0.332, 0.311, 0.285, 0.304, 0.268, 0.252, 0.248, 0.235, 0.243, 0.254, 0.251, 0.259, 0.208, 0.225, 0.236, 0.222, 0.219, 0.22, 0.234, 0.221, 0.231, 0.226, 0.208, 0.194, 0.173, 0.196, 0.163, 0.154, 0.15, 0.15, 0.174, 0.198, 0.177, 0.168, 0.16, 0.15, 0.15, 0.15, 0.15, 0.173, 0.189, 0.176, 0.167, 0.212, 0.212, 0.229, 0.245, 0.224, 0.209, 0.184, 0.182, 0.207, 0.228, 0.224, 0.19, 0.176, 0.169, 0.15, 0.167, 0.156, 0.15, 0.188, 0.207, 0.234, 0.238, 0.251, 0.223, 0.227, 0.241, 0.224, 0.217, 0.224, 0.205, 0.206, 0.171, 0.15, 0.15, 0.15, 0.155, 0.15, 0.166, 0.178, 0.192, 0.211, 0.192, 0.164, 0.193, 0.2]
+        FB_matrix1[2] = [0.541, 0.56, 0.569, 0.577, 0.584, 0.573, 0.57, 0.534, 0.55, 0.555, 0.545, 0.547, 0.553, 0.545, 0.575, 0.572, 0.565, 0.571, 0.551, 0.512, 0.527, 0.501, 0.533, 0.546, 0.578, 0.563, 0.509, 0.495, 0.542, 0.556, 0.566, 0.563, 0.574, 0.551, 0.569, 0.578, 0.563, 0.594, 0.606, 0.617, 0.623, 0.633, 0.642, 0.607, 0.608, 0.639, 0.624, 0.64, 0.64, 0.636, 0.67, 0.665, 0.694, 0.691, 0.716, 0.705, 0.701, 0.719, 0.735, 0.709, 0.713, 0.713, 0.728, 0.742, 0.722, 0.709, 0.672, 0.658, 0.685, 0.662, 0.669, 0.672, 0.675, 0.665, 0.678, 0.672, 0.709, 0.685, 0.691, 0.688, 0.692, 0.676, 0.665, 0.657, 0.635, 0.63, 0.649, 0.636, 0.643, 0.641, 0.619, 0.621, 0.596, 0.584, 0.601, 0.612, 0.619, 0.604, 0.608, 0.567, 0.569, 0.55, 0.558, 0.569, 0.538, 0.541, 0.508, 0.503, 0.522, 0.49, 0.542, 0.541, 0.55, 0.556, 0.564, 0.602, 0.577, 0.581, 0.579, 0.553, 0.539, 0.528, 0.511, 0.515, 0.501, 0.516, 0.54, 0.566, 0.584, 0.593, 0.616, 0.626, 0.623, 0.601, 0.583, 0.617, 0.615, 0.609, 0.577, 0.569, 0.549, 0.556, 0.555, 0.537, 0.511, 0.502, 0.484, 0.536, 0.527, 0.493, 0.52, 0.509, 0.543, 0.516, 0.535, 0.543, 0.587, 0.585, 0.566, 0.576, 0.603, 0.626, 0.628, 0.617, 0.632, 0.61, 0.631, 0.622, 0.644, 0.653, 0.648, 0.628, 0.622, 0.633, 0.631, 0.629, 0.634, 0.615, 0.64, 0.649, 0.638, 0.64, 0.639, 0.633, 0.646, 0.655, 0.651, 0.667, 0.663, 0.677, 0.654, 0.648, 0.63, 0.606, 0.597, 0.61, 0.64, 0.652, 0.66, 0.654]
+        FB_matrix1[3] = [0.531, 0.548, 0.553, 0.527, 0.525, 0.505, 0.499, 0.535, 0.561, 0.555, 0.527, 0.533, 0.554, 0.534, 0.514, 0.509, 0.526, 0.544, 0.54, 0.546, 0.547, 0.556, 0.505, 0.532, 0.534, 0.556, 0.559, 0.597, 0.614, 0.604, 0.628, 0.616, 0.633, 0.623, 0.634, 0.645, 0.679, 0.621, 0.611, 0.616, 0.624, 0.63, 0.591, 0.563, 0.558, 0.53, 0.542, 0.552, 0.556, 0.533, 0.516, 0.533, 0.536, 0.556, 0.535, 0.538, 0.535, 0.508, 0.505, 0.548, 0.587, 0.612, 0.616, 0.576, 0.555, 0.54, 0.548, 0.546, 0.523, 0.53, 0.516, 0.529, 0.543, 0.545, 0.537, 0.533, 0.527, 0.544, 0.556, 0.562, 0.544, 0.587, 0.573, 0.576, 0.577, 0.598, 0.556, 0.536, 0.534, 0.535, 0.536, 0.539, 0.548, 0.548, 0.527, 0.525, 0.502, 0.503, 0.523, 0.519, 0.54, 0.513, 0.526, 0.551, 0.568, 0.579, 0.59, 0.605, 0.588, 0.589, 0.588, 0.593, 0.564, 0.579, 0.555, 0.542, 0.564, 0.582, 0.544, 0.539, 0.541, 0.525, 0.521, 0.53, 0.53, 0.513, 0.51, 0.495, 0.488, 0.476, 0.466, 0.452, 0.472, 0.468, 0.475, 0.502, 0.528, 0.501, 0.515, 0.539, 0.516, 0.473, 0.455, 0.456, 0.466, 0.499, 0.468, 0.456, 0.447, 0.437, 0.408, 0.406, 0.398, 0.414, 0.398, 0.393, 0.385, 0.357, 0.337, 0.364, 0.37, 0.389, 0.375, 0.377, 0.367, 0.348, 0.318, 0.33, 0.308, 0.285, 0.303, 0.287, 0.279, 0.29, 0.292, 0.247, 0.241, 0.242, 0.265, 0.254, 0.247, 0.245, 0.23, 0.215, 0.203, 0.232, 0.218, 0.219, 0.226, 0.247, 0.226, 0.236, 0.231, 0.239, 0.216, 0.211, 0.23, 0.23, 0.185, 0.208]
+
+        var FB_matrix2 = []; //second option for random walk
+        FB_matrix2[0] = [0.316, 0.304, 0.32, 0.301, 0.324, 0.308, 0.326, 0.337, 0.315, 0.333, 0.342, 0.332, 0.339, 0.293, 0.277, 0.298, 0.31, 0.293, 0.34, 0.378, 0.375, 0.368, 0.355, 0.365, 0.345, 0.348, 0.346, 0.339, 0.387, 0.402, 0.412, 0.396, 0.401, 0.361, 0.346, 0.367, 0.33, 0.328, 0.304, 0.305, 0.31, 0.306, 0.332, 0.336, 0.365, 0.39, 0.39, 0.382, 0.406, 0.409, 0.424, 0.454, 0.458, 0.419, 0.457, 0.472, 0.485, 0.478, 0.489, 0.48, 0.491, 0.503, 0.504, 0.492, 0.491, 0.498, 0.489, 0.459, 0.456, 0.451, 0.463, 0.45, 0.469, 0.467, 0.497, 0.53, 0.524, 0.521, 0.534, 0.564, 0.566, 0.563, 0.613, 0.592, 0.58, 0.592, 0.599, 0.627, 0.606, 0.587, 0.592, 0.616, 0.608, 0.616, 0.638, 0.626, 0.616, 0.607, 0.589, 0.591, 0.584, 0.567, 0.555, 0.521, 0.498, 0.544, 0.519, 0.534, 0.514, 0.533, 0.523, 0.504, 0.525, 0.546, 0.531, 0.508, 0.497, 0.485, 0.506, 0.489, 0.523, 0.541, 0.548, 0.559, 0.545, 0.577, 0.547, 0.505, 0.493, 0.508, 0.501, 0.454, 0.456, 0.462, 0.422, 0.428, 0.437, 0.427, 0.41, 0.398, 0.355, 0.335, 0.327, 0.331, 0.324, 0.297, 0.255, 0.251, 0.256, 0.222, 0.196, 0.209, 0.212, 0.217, 0.205, 0.196, 0.177, 0.176, 0.174, 0.15, 0.15, 0.173, 0.15, 0.15, 0.159, 0.16, 0.15, 0.15, 0.192, 0.159, 0.168, 0.193, 0.192, 0.154, 0.203, 0.198, 0.209, 0.223, 0.2, 0.228, 0.206, 0.192, 0.225, 0.235, 0.255, 0.275, 0.306, 0.349, 0.378, 0.366, 0.366, 0.35, 0.352, 0.351, 0.34, 0.333, 0.32, 0.296, 0.271, 0.296]
+        FB_matrix2[1] = [0.532, 0.512, 0.528, 0.47, 0.502, 0.491, 0.462, 0.454, 0.445, 0.43, 0.398, 0.409, 0.42, 0.438, 0.43, 0.445, 0.462, 0.504, 0.49, 0.49, 0.479, 0.498, 0.485, 0.465, 0.493, 0.473, 0.47, 0.493, 0.469, 0.449, 0.477, 0.431, 0.439, 0.437, 0.46, 0.438, 0.459, 0.452, 0.473, 0.462, 0.48, 0.5, 0.505, 0.51, 0.531, 0.523, 0.514, 0.486, 0.48, 0.463, 0.471, 0.452, 0.463, 0.505, 0.512, 0.519, 0.505, 0.508, 0.534, 0.516, 0.513, 0.508, 0.468, 0.486, 0.505, 0.503, 0.467, 0.482, 0.473, 0.504, 0.53, 0.525, 0.514, 0.488, 0.505, 0.513, 0.538, 0.54, 0.532, 0.514, 0.52, 0.543, 0.584, 0.635, 0.656, 0.685, 0.668, 0.67, 0.685, 0.647, 0.654, 0.666, 0.658, 0.661, 0.663, 0.685, 0.686, 0.679, 0.662, 0.617, 0.645, 0.644, 0.612, 0.605, 0.605, 0.64, 0.631, 0.611, 0.597, 0.564, 0.57, 0.565, 0.57, 0.592, 0.558, 0.574, 0.576, 0.531, 0.547, 0.551, 0.541, 0.545, 0.559, 0.573, 0.565, 0.558, 0.534, 0.552, 0.544, 0.571, 0.563, 0.585, 0.57, 0.562, 0.572, 0.571, 0.563, 0.574, 0.57, 0.584, 0.604, 0.597, 0.622, 0.594, 0.616, 0.597, 0.597, 0.598, 0.6, 0.605, 0.598, 0.595, 0.591, 0.628, 0.636, 0.609, 0.601, 0.595, 0.637, 0.627, 0.603, 0.581, 0.568, 0.557, 0.537, 0.52, 0.541, 0.537, 0.488, 0.495, 0.47, 0.442, 0.461, 0.457, 0.469, 0.459, 0.444, 0.434, 0.43, 0.407, 0.385, 0.424, 0.42, 0.416, 0.434, 0.469, 0.467, 0.448, 0.447, 0.428, 0.439, 0.43, 0.429, 0.459, 0.448, 0.475, 0.477, 0.465, 0.434, 0.441]
+        FB_matrix2[2] = [0.695, 0.672, 0.658, 0.669, 0.652, 0.613, 0.604, 0.611, 0.629, 0.61, 0.582, 0.594, 0.587, 0.561, 0.539, 0.529, 0.548, 0.504, 0.503, 0.458, 0.455, 0.419, 0.418, 0.428, 0.415, 0.392, 0.423, 0.449, 0.438, 0.44, 0.427, 0.422, 0.431, 0.43, 0.364, 0.331, 0.343, 0.345, 0.369, 0.372, 0.357, 0.349, 0.327, 0.322, 0.337, 0.324, 0.304, 0.279, 0.251, 0.299, 0.297, 0.278, 0.275, 0.28, 0.28, 0.285, 0.271, 0.315, 0.29, 0.277, 0.268, 0.249, 0.229, 0.203, 0.221, 0.223, 0.257, 0.255, 0.27, 0.265, 0.291, 0.294, 0.241, 0.243, 0.236, 0.286, 0.26, 0.259, 0.277, 0.268, 0.267, 0.252, 0.258, 0.257, 0.275, 0.272, 0.247, 0.244, 0.262, 0.271, 0.299, 0.297, 0.319, 0.316, 0.293, 0.267, 0.263, 0.309, 0.312, 0.299, 0.314, 0.343, 0.314, 0.296, 0.311, 0.259, 0.25, 0.253, 0.251, 0.264, 0.255, 0.237, 0.215, 0.211, 0.222, 0.243, 0.229, 0.251, 0.251, 0.289, 0.25, 0.272, 0.277, 0.254, 0.259, 0.28, 0.286, 0.287, 0.311, 0.333, 0.359, 0.375, 0.367, 0.368, 0.388, 0.406, 0.411, 0.417, 0.419, 0.407, 0.428, 0.442, 0.404, 0.396, 0.426, 0.394, 0.399, 0.397, 0.382, 0.366, 0.35, 0.36, 0.342, 0.322, 0.308, 0.323, 0.295, 0.32, 0.344, 0.346, 0.337, 0.385, 0.374, 0.38, 0.388, 0.385, 0.397, 0.371, 0.366, 0.348, 0.359, 0.352, 0.318, 0.287, 0.258, 0.24, 0.244, 0.245, 0.229, 0.225, 0.264, 0.302, 0.318, 0.314, 0.316, 0.279, 0.312, 0.333, 0.295, 0.294, 0.292, 0.318, 0.312, 0.306, 0.288, 0.284, 0.309, 0.291, 0.33, 0.361]
+        FB_matrix2[3] = [0.83, 0.817, 0.794, 0.782, 0.785, 0.793, 0.766, 0.757, 0.744, 0.724, 0.709, 0.661, 0.651, 0.65, 0.656, 0.677, 0.649, 0.596, 0.585, 0.571, 0.585, 0.58, 0.58, 0.604, 0.6, 0.604, 0.595, 0.608, 0.631, 0.628, 0.633, 0.633, 0.611, 0.66, 0.651, 0.662, 0.671, 0.681, 0.68, 0.669, 0.633, 0.637, 0.654, 0.636, 0.662, 0.642, 0.657, 0.67, 0.658, 0.615, 0.638, 0.658, 0.645, 0.669, 0.697, 0.727, 0.72, 0.743, 0.738, 0.773, 0.799, 0.783, 0.82, 0.815, 0.785, 0.768, 0.733, 0.737, 0.734, 0.733, 0.715, 0.727, 0.735, 0.766, 0.749, 0.777, 0.748, 0.743, 0.72, 0.727, 0.732, 0.71, 0.715, 0.737, 0.696, 0.673, 0.675, 0.666, 0.673, 0.656, 0.645, 0.623, 0.604, 0.623, 0.641, 0.661, 0.633, 0.616, 0.62, 0.603, 0.581, 0.577, 0.58, 0.575, 0.562, 0.544, 0.526, 0.558, 0.588, 0.567, 0.584, 0.584, 0.593, 0.585, 0.592, 0.597, 0.592, 0.587, 0.619, 0.626, 0.636, 0.664, 0.696, 0.694, 0.709, 0.694, 0.684, 0.674, 0.666, 0.681, 0.721, 0.691, 0.671, 0.671, 0.656, 0.671, 0.669, 0.687, 0.692, 0.706, 0.701, 0.689, 0.729, 0.728, 0.75, 0.783, 0.806, 0.823, 0.85, 0.85, 0.84, 0.815, 0.821, 0.825, 0.838, 0.834, 0.85, 0.85, 0.818, 0.829, 0.85, 0.85, 0.836, 0.799, 0.792, 0.773, 0.752, 0.722, 0.695, 0.687, 0.655, 0.648, 0.645, 0.64, 0.624, 0.642, 0.653, 0.639, 0.663, 0.647, 0.673, 0.692, 0.692, 0.704, 0.738, 0.7, 0.704, 0.725, 0.712, 0.731, 0.735, 0.734, 0.721, 0.72, 0.714, 0.708, 0.707, 0.725, 0.692, 0.68]
+
+        // 1. Figure out which counterbalance the subject is in
+        var last_letter = subject_id[subject_id.length - 1];
+        // Define groups
+        var group_1 = ['a', 'b', 'c', '0', '1', '2', '3', '4'];
+        var group_2 = ['d', 'e', 'f', '5', '6', '7', '8', '9'];
+
+        // Function to determine which group a character belongs to
+        function getGroup(char) {
+            if (group_1.includes(char)) return 1;
+            if (group_2.includes(char)) return 2;
+            return 1; // Handle unexpected cases
+        }
+
+        // Determine groups
+        var last_letter_group = getGroup(last_letter);
+        var counterbalance;
+        if (last_letter_group === 1) {
+            counterbalance = 1;
+        } else if (last_letter_group === 2) {
+            counterbalance = 2;
+        }
+
+        // 2. Assign block order deterministically
+        // var block_order = ['Location', 'Location', 'Location', 'Location'];
+
+        // 3. Determine random-walk condition based on counterbalance or random for local testing
+        var condition_random_walk;
+        if (subject_id === 'local') {
+            // For local testing, randomly choose
+            condition_random_walk = (Math.random() < 0.5) ? 1 : 2;
+        } else {
+            // For actual subjects, use counterbalance
+            condition_random_walk = counterbalance;
+        }
+
+        // 4. Plug in the matrices based on that random flip
+        var FB_matrix = (condition_random_walk === 1) ? FB_matrix1 : FB_matrix2;
+        // var FB_matrix_icon = (condition_random_walk === 1) ? FB_matrix2 : FB_matrix1;
+
+        /*----------------------------------------------------
+        Start instructions
+        ------------------------------------------------------*/
+
+        //instructions
+        var instructions_locations = {
+            on_start: function () {
+                if (document.querySelector('#cursor-toggle') != null) {
+                    document.querySelector('#cursor-toggle').remove()
+                }
+            },
+            type: jsPsychInstructions,
+            pages: ["<p><b><u>Welcome to the Slot Machine Game</u></b></p>"
+                + "<p>This is a two-day study and payment will be given only after finishing the second part tomorrow.</p>"
+                + "<p style='text-align:left'>You will be compensated at a rate of &pound;6 per hour for completing this study. In addition, you have the opportunity to earn <b>an extra &pound;1 based on your earnings in the game.</b></p>"
+                + "<u>Feel free to navigate between screens using the keyboard's left and right arrows or the buttons provided below.</u><br><br>",
+
+                "<p style='text-align:left'>We will now present the game instructions. <b>Please read them carefully.</b><br></p>",
+
+                "<p style='text-align:center'>At the end of the instructions, <b>we will ask you to complete a short quiz about them</b> to ensure that everything is well understood.</p>",
+
+            "<p style='text-align:center'>In the game, you will be presented with <b>four slot machines</b>, each of which will look as shown below.</p>"
+            + "<img class='exampleSlot' src='" + instructions_images[0] + "'>",
+
+            "To choose the <b>left machine press 'S'</b>, for the <b>middle-left machine press 'F'</b>, for the <b>middle-right machine press 'H'</b>, and for the <b>right machine press 'K'</b> on your keyboard.</p>"
+            + "<img class='example' src='" + instructions_images[1] + "'>",
+
+            "<p>The game also includes four colored icons. At each step, two of the four icons will appear on the screens of two of the four slot machines. <br> <b>You can only choose a machine if it has an icon on it.</b><br><br>"
+            + "<img class='exampleIcon' src='" + instructions_images[2] + "'>",
+
+            "<p>Here, for example, you could only select the <b>left machine (by pressing 'S')</b> or the <b>middle-left machine (by pressing 'F')</b>.</p>"
+            + "<img class='example' src='" + instructions_images[3] + "'>",
+
+            "<p>Here, however, you could only select the <b>middle-right machine (by pressing 'H')</b> or the <b>right machine (by pressing 'K')</b>.</p>"
+            + "<img class='example' src='" + instructions_images[4] + "'>",
+
+            "<p style='text-align:center'>After selecting a machine, <b>the icon of the chosen machine will remain and the other one will dissappear.</b></p>"
+            + "<img class='example' src='" + instructions_images[5] + "'><br>",
+
+            "<p style='text-align:center'>Then, you will see an outcome in the middle of the screen. <b>The outcome could be either winning +1 coin</b>, as shown here.</p>"
+            + "<img class='exampleReward' src='" + instructions_images[6] + "'><br>",
+
+            "<p style='text-align:center'>Alternatively, you may <b>not win a coin</b>, as in this case.</p>"
+            + "<img class='exampleReward' src='" + instructions_images[7] + "'><br>",
+
+            "<p style='text-align:center'>At every step each option (coin or machine) has its own chances for giving you a coin.<br>" +
+            "The coin winning chances for the two offered options are unrelated to one another and don't sum to 1.<br>" +
+            "For example, it could be that one option has high chances of giving you a coin and the other has low chances, or that both options could have similar chances of giving you a coin. <br>" +
+            "So if you didn't win a coin, it doesn't mean the other option would have given you a coin or vice versa",
+
+                "<p style='text-align:center'>Please also note that an option you find to be highly rewarding could also sometimes not give you a coin.<br>",
+
+                "<p style='text-align:center'>The game consists of two types of steps: <b>Location steps</b> and <b>Icon steps</b>.<br>",
+                "<p style='text-align:center'>At the beginning of each step, you will see a hand (for Location steps) or eye (for Icon steps) logo that indicates which step is it.</p>",
+            "<p style='text-align:center'><b>The hand logo indicates your current choice should depend on the machines' locations.</b></p>"
+            + "<p style='text-align:center'><b>The eye logo indicates your current choice should depend on the icons appearing on the machines.</b></p>"
+            + "<img class='example_state_only' src='" + instructions_images[8] + "'>",
+
+            "<p style='text-align:left'>For example, here the hand logo indicates this is a 'Location' step. So the <b>locations are the only thing that matters</b> for your choice."
+            + "You should base your decision on previous experience when you chose the offered machine locations."
+            + "<br>The icons appearing on the screen don't influence the coin winning chances in these steps.</p>"
+            + "<img class='exampleState' src='" + instructions_images[9] + "'>",
+
+            "<p style='text-align:left'>In contrast, if the screen at the beginning shows the <b>eye logo, then this is an icon step.</b>"
+            + " That means in this step your coin winning chances only depend on the icons appearing on the screens.</b><br>"
+            + "In this case, you should <b>choose based on how rewarding you found each icon to be in past choices, and disregard any knowledge about the differnet machine locations.</b><br></p>"
+            + "<img class='exampleState' src='" + instructions_images[10] + "'>",
+
+                "Your task is to win as many coins as you can, as these will determine your <b>money bonus</b>.<br><br>",
+
+                "In each session (today and tomorrow), you will play <b>200 choice steps with 3 breaks during the game.</b><br><br>",
+
+            "<p style='text-align:left'>Throughout the task, the winning chances of machines and icons will <b>slowly change</b>."
+            + "<br>That means your experience from many steps ago may no longer be relevant, so you need to keep on learning which icons and machine locations give you more coins.</p>",
+
+                "<p style='text-align:left'><b>Before moving on to the quiz, here are important things to remember:</b><br>",
+                "<p style='text-align:left'>1. How rewarding a machine or an icon is may slowly change throughout the game.",
+                "<p style='text-align:left'>2. When you see the 'Hand' logo it means you are in a 'Location' step, you should therefore choose based on your previous experience with the offered machine locations. The icons appearing on the machines don't affect winning chances in these steps.<br>",
+                "<p style='text-align:left'>3. When you see the 'Eye' logo it means you are in an 'Icon' step, you should therefore choose based on your previous experience with the offered icons. The locations in which the icons appear don't affect winning chances in these steps.<br>",
+                "<p style='text-align:left'>4. If you didn't win a coin, it does not mean the other option would have given you a coin. The winning chances of the two options are unrelated"],
+            show_clickable_nav: true
+        };
+
+        var instructions_repeat = {
+            on_start: function () {
+                if (document.querySelector('#cursor-toggle') != null) {
+                    document.querySelector('#cursor-toggle').remove()
+                }
+            },
+            type: jsPsychInstructions,
+            pages: ["<p style='text-align:left'> 1. There are 4 locations and 4 icons in the game. On each step, 2 machines are offered.</p>" +
+                "<p style='text-align:left'>2. To choose the left machine press 'S', to choose the middle-left machine press 'F', to choose the middle-right machine press 'H', and to choose the right machine press 'K' on your keyboard.</p>" +
+                "<p style='text-align:left'>3. After selecting an option you will see a reward of +1 coin or no reward.</p>" +
+                "<p style='text-align:left'>4. On 'Hand' steps the reward depends on the machine location.</p>" +
+                "<p style='text-align:left'>5. On 'Eye' steps the reward depends on the icon appearing on the screen.</p>" +
+                "<p style='text-align:left'>6. How valuable machines and icons are will slowly change throughout the game.</p>" +
+                "<p style='text-align:left'>7. If you did not win a coin, it does not mean the other option would have given you a coin.</p>" +
+                "<p style='text-align:left'>8. Your task is to win as many coins as you can.</p>",
+                "<p style='text-align:center'>You will now start again the quiz"],
+            show_clickable_nav: true
+        };
+
+        var start_instructions_test = {
+            on_start: function () {
+                if (document.querySelector('#cursor-toggle') != null)
+                    document.querySelector('#cursor-toggle').remove()
+            },
+            type: jsPsychHtmlKeyboardResponse,
+            stimulus: "<p> <b>Great!</b><br><br>  We will now move on to a quick quiz to make sure you understood the instructions. If you make a mistake, you will need to go through them again. <br><br> <b> Press any key to continue</b></p>"
+        }
+        var Q1_options = ["2", "4", "6", "8"]
+        var Q2_options = ["1", "2", "3", "4"]
+        var Q3_options = ["S", "F", "H", "K"];
+        var Q4_options = ["I will either win 1 coin or not win any coin.", "I can win any value between 0 and 100."]
+        var Q5_options = ["My goal is to earn as many coins as I can.", "My goal is to choose each option equally."]
+        var Q6_options = ["On previous experience I had with the offered machine locations.", "On previous experience I had with the offered icons."];
+        var Q7_options = ["True, that is why I should keep on learning.", "False, it stays the same along the game."];
+        var Q8_options = ["True, what I learned on previous rounds is no longer relevant.", "False, the winning chances are the same on all rounds.",];
+        var Q9_options = ["True, if one option is good it means the other one is bad.", "False, you can learn about an option only by choosing it."];
+        var Q10_options = ["True, everything I know is relevant for the current choice.", "False, on 'Location' steps, you should not base your choice on the icons."];
+        var Q11_options = ["True, on 'Icon' steps, you should base your choice on the locations.", "False, on 'Icon' steps, you should not base your choice on the locations."];
+
+        var incorrect_questions = []; // To track questions that need to be repeated
+
+        var instructions_test = {
+            type: jsPsychSurveyMultiChoice,
+            questions: [
+                { prompt: "How many machine locations are there in total?", name: 'number_machines', correct: "4", options: Q1_options, required: true },
+                { prompt: "How many icons are there in total?", name: 'number_icons', correct: "4", options: Q1_options, required: true },
+                { prompt: "How many options are offered on each step?", name: 'round_options', correct: "2", options: Q2_options, required: true },
+                { prompt: "How do you choose the left machine?", name: 'choose_icon1', correct: "S", options: Q3_options, required: true },
+                { prompt: "How do you choose the middle-right machine?", name: 'choose_machine', correct: "H", options: Q3_options, required: true },
+                { prompt: "What will happen after your choice?", name: 'outcome', correct: "I will either win 1 coin or not win any coin.", options: Q4_options, required: true },
+                { prompt: "What is the goal of the game?", name: 'game_goal', correct: "My goal is to earn as many coins as I can.", options: Q5_options, required: true },
+                { prompt: "When a 'Hand' logo appears, what should you base your decision on?", name: 'base_decision', correct: "On previous experience I had with the offered machine locations.", options: Q6_options, required: true },
+                { prompt: "When an 'Eye' logo appears, what should you base your decision on?", name: 'base_decision1', correct: "On previous experience I had with the offered icons.", options: Q6_options, required: true },
+                { prompt: "The winning chances of the options will slowly change", name: 'in_rounds', correct: "True, that is why I should keep on learning.", options: Q7_options, required: true },
+                { prompt: "If I won a coin it means the option I did not chose would not have given me a coin.", name: 'value_independence', correct: "False, you can learn about an option only by choosing it.", options: Q9_options, required: true },
+                { prompt: "On 'Location' steps, when the 'Hand' logo appears, you might win more if you select a machine based on the icon on its screen.", name: 'machine_value', correct: "False, on 'Location' steps, you should not base your choice on the icons.", options: Q10_options, required: true },
+                { prompt: "On 'Icon' steps, when the 'Eye' logo appears, you might win more if you select a based on the machines' locations.", name: 'icon_value', correct: "False, on 'Icon' steps, you should not base your choice on the locations.", options: Q11_options, required: true }
+            ]
+        };
+
+        var if_trial = {
+            type: jsPsychHtmlButtonResponse,
+            stimulus: "<p><b>Sorry. You made a mistake.</b><br>"
+                + "We will now briefly go again over the instructions.<br>"
+                + "Then, you could try and correct your mistake. <br><br>"
+                + "Thank you for your patience!",
+            choices: ['Try again'],
+        }
+        var to_repeat;
+        var check_answers = {
+            timeline: [if_trial, instructions_repeat, instructions_test],
+            conditional_function: function () {
+                to_repeat = false;
+                incorrect_questions = []; // Reset the array for incorrect questions
+                var responses_to_test = jsPsych.data.getLastTrialData().trials[0].response;
+                for (i = 0; i < instructions_test.questions.length; i++) {
+                    var current_name = instructions_test.questions[i].name;
+                    var current_correct = instructions_test.questions[i].correct;
+                    if (current_correct != responses_to_test[current_name]) {
+                        to_repeat = true;
+                        incorrect_questions.push(instructions_test.questions[i]); // Add the incorrect question
+                    }
+                }
+                return to_repeat;
+            }
+        };
+
+        var loop_timeline = {
+            timeline: [check_answers],
+            loop_function: function () {
+                return to_repeat; // Continue looping while `to_repeat` is true
+            }
+        };
+
+        /*---------------------------------------------------- 
+        Functions for location Blocks
+        ------------------------------------------------------*/
+
+        function find_background_loc(locs) {
+            var ret = [false, false, false, false]
+            var i
+            for (i = 0; i < locs.length; i++) {
+                if (locs[i] == background) {
+                    ret[i] = true;
+                }
+            }
+            return ret;
+        }
+
+        function draw_show_locations(deck) {
+            // Sample 2 random icons for each trial (regardless of block)
+            icons = jsPsych.randomization.sampleWithoutReplacement([0, 1, 2, 3], 2);
+            locs = jsPsych.randomization.sampleWithoutReplacement([0, 1, 2, 3], 2);
+
+            // record what's on offer
+            icon_offered_1 = icons[0];
+            icon_offered_2 = icons[1];
+            location_offered_1 = locs[0];
+            location_offered_2 = locs[1];
+            location_first_icon = locs[0];  // Location where first icon appears
+            location_second_icon = locs[1]; // Location where second icon appears
+
+            // put the icons in the chosen locations
+            icon_locs = Array(4).fill(-1);
+            icon_locs[locs[0]] = icons[0];
+            icon_locs[locs[1]] = icons[1];
+
+            show_icon_locs = Array(4).fill(filled_background);
+            show_icon_locs[locs[0]] = test_deck_locations[icons[0]];
+            show_icon_locs[locs[1]] = test_deck_locations[icons[1]];
+
+            // cache for later
+            left_location = show_icon_locs[0];
+            mid_left_location = show_icon_locs[1];
+            mid_right_location = show_icon_locs[2];
+            right_location = show_icon_locs[3];
+            background_locs = find_background_loc(show_icon_locs);
+
+            const left_with_tag = `<img class='location_left'        src='${left_location}'>`;
+            const mid_left_with_tag = `<img class='location_middle_left' src='${mid_left_location}'>`;
+            const mid_right_with_tag = `<img class='location_middle_right' src='${mid_right_location}'>`;
+            const right_with_tag = `<img class='location_right'       src='${right_location}'>`;
+            // const state = `<img class='state_location'       src='images/state/Location.png'>`;
+
+            return left_with_tag + mid_left_with_tag + mid_right_with_tag + right_with_tag;
+        }
+
+        function show_choice_locations(deck) {
+            invalid = false;
+            // Initialize flags for this trial
+            respond_faster_message = 0;
+            wrong_key_selected = 0;
+
+            // grab whatever key the subject just hit
+            last_choice = jsPsych.data.getLastTrialData().values()[0].response;
+            // map that to a slot
+            location_selected = key_to_index[last_choice];
+            icon_selected = icon_locs[location_selected];
+
+            // start with all four blanks + the state‐icon
+            location_tags = [
+                "<img class='location_left'        src='" + background + "'>",
+                "<img class='location_middle_left' src='" + background + "'>",
+                "<img class='location_middle_right' src='" + background + "'>",
+                "<img class='location_right'       src='" + background + "'>",
+                // "<img class='state_location'       src='images/state/Location.png'>"
+            ];
+
+            // did they pick one of the two valid locations?
+            if (location_selected === locs[0]) {
+                icon_not_selected = icon_locs[locs[1]];
+                to_show = show_icon_locs[locs[0]];
+                location_not_selected = locs[1];
+                location_tags[locs[0]] = location_tags[locs[0]].replace(background, to_show);
+            }
+            else if (location_selected === locs[1]) {
+                icon_not_selected = icon_locs[locs[0]];
+                to_show = show_icon_locs[locs[1]];
+                location_not_selected = locs[0];
+                location_tags[locs[1]] = location_tags[locs[1]].replace(background, to_show);
+            }
+            else {
+                // WRONG key or too slow
+                location_selected = null;
+                icon_selected = null;
+                reward = null;
+                invalid = true;
+                if (last_choice != null) {
+                    wrong_key_selected = 1;
+                    return wrong_key_location;
+                } else {
+                    respond_faster_message = 1;
+                    return too_slow;
+                }
+            }
+
+            // otherwise show your four locations + state
+            return location_tags[0]
+                + location_tags[1]
+                + location_tags[2]
+                + location_tags[3];
+            // + location_tags[4];
+        }
+
+
+        /*---------------------------------------------------- 
+        Functions for Icon Blocks
+        ------------------------------------------------------*/
+
+        // function draw_show_icons(deck) {
+        //     // record globals
+        //     block_type = 'Icon';
+        //     // 1) build pool
+        //     let pool = deck.map((_, i) => i);
+        //     // 2) exclude previous‐block icons if needed
+        //     if (block_order[0] === 'location') {
+        //         const used = block_icons.concat(remaining_icons);
+        //         pool = pool.filter(i => !used.includes(i));
+        //     }
+        //     // 3) fallback
+        //     if (pool.length < 2) pool = deck.map((_, i) => i);
+        //     // 4) sample two fresh cards
+        //     icons = jsPsych.randomization.sampleWithoutReplacement(pool, 2);
+        //     // they always sit in slots 1 & 2
+        //     locs = [1, 2];
+
+        //     // record what's on offer
+        //     icon_offered_1 = icons[0];
+        //     icon_offered_2 = icons[1];
+        //     location_offered_1 = locs[0];
+        //     location_offered_2 = locs[1];
+        //     location_first_icon = locs[0];  // Location where first icon appears
+        //     location_second_icon = locs[1]; // Location where second icon appears
+
+        //     // build icon_locs & show_icon_locs
+        //     icon_locs = [-1, -1, -1, -1];
+        //     icon_locs[locs[0]] = icons[0];
+        //     icon_locs[locs[1]] = icons[1];
+
+        //     show_icon_locs = [filled_background, filled_background, filled_background, filled_background];
+        //     show_icon_locs[locs[0]] = deck[icons[0]];
+        //     show_icon_locs[locs[1]] = deck[icons[1]];
+
+        //     // render only the two center slots + eye
+        //     const mid_left_with_tag = `<img class='location_middle_left'  src='${show_icon_locs[1]}'>`;
+        //     const mid_right_with_tag = `<img class='location_middle_right' src='${show_icon_locs[2]}'>`;
+        //     // const state = `<img class='state_icon'          src='images/state/Icon.png'>`;
+
+        //     return mid_left_with_tag + mid_right_with_tag;
+        // }
+
+        // function show_choice_icons() {
+        //     invalid = false;
+        //     // Initialize flags for this trial
+        //     respond_faster_message = 0;
+        //     wrong_key_selected = 0;
+
+        //     last_choice = jsPsych.data.getLastTrialData().values()[0].response;
+        //     location_selected = key_to_index[last_choice];
+        //     icon_selected = icon_locs[location_selected];
+
+        //     // two center blanks + the eye‐icon
+        //     location_tags = [
+        //         "<img class='location_middle_left'  src='" + background + "'>",
+        //         "<img class='location_middle_right' src='" + background + "'>",
+        //         // "<img class='state_icon'          src='images/state/Icon.png'>"
+        //     ];
+
+        //     // only positions 1 or 2 are legal here
+        //     if (location_selected === 1 || location_selected === 2) {
+        //         const tagIndex = location_selected - 1;
+        //         const other_loc = tagIndex === 0 ? 2 : 1;
+        //         const to_show = show_icon_locs[location_selected];
+        //         icon_not_selected = icon_locs[other_loc];
+        //         location_not_selected = other_loc;
+        //         location_tags[tagIndex] = location_tags[tagIndex].replace(background, to_show);
+        //     }
+        //     else {
+        //         // WRONG key or too slow
+        //         location_selected = null;
+        //         icon_selected = null;
+        //         reward = null;
+        //         invalid = true;
+        //         if (last_choice != null) {
+        //             wrong_key_selected = 1;
+        //             return wrong_key_icon;
+        //         } else {
+        //             respond_faster_message = 1;
+        //             return too_slow;
+        //         }
+        //     }
+
+        //     return location_tags[0] + location_tags[1];
+        // }
+
+        /*---------------------------------------------------- 
+        ------------------------------------------------------*/
+
+        function show_reward(trial) {
+            // Initialize probability variables to prevent undefined errors
+            prob_reward_selected = null;
+            prob_reward_not_selected = null;
+
+            // first, store your new columns…
+            Prob_reward_relevant_1 = FB_matrix[location_to_fb_row[0]][trial];
+            Prob_reward_relevant_2 = FB_matrix[location_to_fb_row[1]][trial];
+            Prob_reward_relevant_3 = FB_matrix[location_to_fb_row[2]][trial];
+            Prob_reward_relevant_4 = FB_matrix[location_to_fb_row[3]][trial];
+
+            // if they mis-responded, bail out with the same message
+            if (invalid) {
+                if (last_choice != null) {
+                    return wrong_key_location;
+                } else {
+                    return too_slow;
+                }
+            }
+
+            // Get reward probability based on location position's assigned FB_matrix row
+            prob_reward_selected = FB_matrix[location_to_fb_row[location_selected]][trial];
+            prob_reward_not_selected = FB_matrix[location_to_fb_row[location_not_selected]][trial];
+
+            const prob_unreward = 1 - prob_reward_selected;
+            reward = jsPsych.randomization.sampleWithReplacement(
+                [0, 1], 1, [prob_unreward, prob_reward_selected]
+            )[0];
+            if (!is_practice) sum_of_rewards += reward;
+            const reward_to_show = `<img class="reward" src="${reward_images[reward]}">`;
+
+            // render
+            return location_tags[0]
+                + location_tags[1]
+                + location_tags[2]
+                + location_tags[3]
+                + reward_to_show;
+            // + location_tags[4];
+        }
+
+        /*This function downloads the data */
+        var subN = localStorage.subN
+        var IDsub = Date.now();
+        function download_csv(csv) {
+            var hiddenElement = document.createElement('a');
+            file_name = "WM_visual_locsay_" + subN + "_" + IDsub.toString() + ".csv"
+            hiddenElement.href = 'data:text/csv;charset=utf-8,' + encodeURI(csv);
+            hiddenElement.target = '_blank';
+            hiddenElement.download = file_name;
+            hiddenElement.click();
+        }
+        /*---------------------------------------------------- 
+        Variabels for the game
+        ------------------------------------------------------*/
+        var current_practice_trial = 0;
+        var current_exp_trial = 0;
+        var block = 0;
+        var blocks = 3;
+        var sampled_state = null;
+        var left_location;
+        var right_location;
+        var mid_left_location;
+        var mid_right_location;
+        var location_selected;
+        var icon_selected;
+        var reward;
+
+        /*---------------------------------------------------- 
+        Start practice
+        ------------------------------------------------------*/
+
+        var start_practice = {
+            type: jsPsychHtmlKeyboardResponse,
+            stimulus: '<div><b>We will now do a few practice steps.</b><br><br><u>Please keep your left-hand fingers on <b>"S"</b> and <b>"F"</b> and your right-hand fingers on <b>"H"</b> and <b>"K"</b></u>.<br><br>' +
+                '<img class="example_keyboard" src="' + keyboard_images[0] + '">' + '<br><br> <b> Press any key to begin</b></div>',
+            post_trial_gap: 1000,
+            data: { condition_random_walk: function () { return condition_random_walk } },
+            on_finish: function () {
+                is_practice = 1
+                document.querySelector('head').insertAdjacentHTML('beforeend', '<style id="cursor-toggle"> html { cursor: none; } </style>')
+            },
+        }
+
+        var fixation_locations_loc_block = {
+            type: jsPsychHtmlKeyboardResponse,
+            stimulus: function () {
+                const left = "<img class='location_left'        src='" + background + "'>";
+                const midL = "<img class='location_middle_left' src='" + background + "'>";
+                const midR = "<img class='location_middle_right' src='" + background + "'>";
+                const right = "<img class='location_right'       src='" + background + "'>";
+                // const stateIcon = "<img class='state_location'   src='images/state/Location.png'>";
+                return left + midL + midR + right;
+            },
+            choices: "NO_KEYS",
+            trial_duration: 1000
+        };
+
+        // var fixation_icons_loc_block = {
+        //     type: jsPsychHtmlKeyboardResponse,
+        //     stimulus: function () {
+        //         const midL = "<img class='location_middle_left'  src='" + background + "'>";
+        //         const midR = "<img class='location_middle_right' src='" + background + "'>";
+        //         // const stateIcon = "<img class='state_icon'      src='images/state/Icon.png'>";
+        //         return midL + midR;
+        //     },
+        //     choices: "NO_KEYS",
+        //     trial_duration: 1000
+        // };
+
+
+        var state_locations = {
+            type: jsPsychHtmlKeyboardResponse,
+            on_start: function () {
+                sampled_state = "Location";
+            },
+            stimulus: function () {
+                // draw all four "empty" backgrounds
+                const left = "<img class='location_left'        src='" + background + "'>";
+                const midL = "<img class='location_middle_left' src='" + background + "'>";
+                const midR = "<img class='location_middle_right' src='" + background + "'>";
+                const right = "<img class='location_right'       src='" + background + "'>";
+                // draw the hand icon
+                // const stateIcon = "<img class='state_location' src='images/state/location.png'>";
+                return left + midL + midR + right;
+            },
+            choices: "NO_KEYS",
+            trial_duration: 1000
+        };
+
+        // var state_icons = {
+        //     type: jsPsychHtmlKeyboardResponse,
+        //     on_start: function () {
+        //         sampled_state = "Icon";
+        //     },
+        //     stimulus: function () {
+        //         // only show the two center slots, still on the empty background
+        //         const midL = "<img class='location_middle_left'  src='" + background + "'>";
+        //         const midR = "<img class='location_middle_right' src='" + background + "'>";
+        //         // draw the eye icon
+        //         // const stateIcon = "<img class='state_icon' src='images/state/Icon.png'>";
+        //         return midL + midR;
+        //     },
+        //     choices: "NO_KEYS",
+        //     trial_duration: 1000
+        // };
+
+        var practice_stimuli = {
+            type: jsPsychHtmlKeyboardResponse,
+            stimulus: function () {
+                return draw_show_locations(practice_deck)
+            },
+            choices: "ALL_KEYS",
+            trial_duration: 6000,
+            data: { phase: 'practice', trial_name: 'stimuli', trial_num: function () { return current_practice_trial } },
+
+        }
+
+        var practice_choice = {
+            type: jsPsychHtmlKeyboardResponse,
+            stimulus: show_choice_locations,
+            choices: "NO_KEYS",
+            trial_duration: 750,
+            data: { phase: 'practice', trial_name: 'choice', trial_num: function () { return current_practice_trial } },
+            on_finish: function (data) {
+
+            }
+        }
+
+        var practice_reward = {
+            type: jsPsychHtmlKeyboardResponse,
+            stimulus: function () {
+                return show_reward(current_practice_trial)
+            },
+            choices: "NO_KEYS",
+            trial_duration: 1000,
+            data: { phase: 'practice', trial_name: 'reward', trial_num: function () { return current_practice_trial } }
+            , on_finish: function (data) {
+                current_practice_trial += 1;
+                data.location_selected = location_selected
+                data.icon_selected = (icon_selected !== null) ? getIconColorName(icon_selected) : null;
+                data.location_first_icon = location_first_icon
+                data.location_second_icon = location_second_icon
+                data.reward = reward;
+                data.prob_reward_selected = prob_reward_selected;
+                data.prob_reward_not_selected = prob_reward_not_selected;
+                data.prob_reward_relevant_1 = Prob_reward_relevant_1;
+                data.prob_reward_relevant_2 = Prob_reward_relevant_2;
+                data.prob_reward_relevant_3 = Prob_reward_relevant_3;
+                data.prob_reward_relevant_4 = Prob_reward_relevant_4;
+                data.respond_faster_message = respond_faster_message;
+                data.wrong_key_selected = wrong_key_selected;
+                data.condition_random_walk = condition_random_walk;
+            }
+        }
+
+        /*---------------------------------------------------- 
+        Start Exp part of location Block
+        ------------------------------------------------------*/
+
+        var start_exp = {
+            type: jsPsychHtmlKeyboardResponse,
+            stimulus: '<div> <b>Good job! Practice completed.</b> <br> <br> We will now move on to the real game. Please do your best to respond as fast as you can while trying to earn as many coins as you can. <br><br> Good luck!<br><br> <b>Press any key to continue.</b></div>',
+            post_trial_gap: 1000,
+            on_finish: function () {
+                is_practice = 0;
+                // Randomly assign FB_matrix rows to location locations
+                location_to_fb_row = jsPsych.randomization.shuffle([0, 1, 2, 3]);
+            },
+        }
+
+        // Old start block, without the differentiating between first block and the rest
+        // var start_block = {
+        //     type: jsPsychHtmlKeyboardResponse,
+        //     stimulus: function () {
+
+        //         start_block_str = 
+        //         '<p style="text-align: center"><b>We will now start the experiment</b></p>' 
+        //         + '<p style="text-align: center">You will have a short break after 50 steps</p>' 
+        //             + '<p style="text-align: center">Use the response key that matches the slot location you wish to select (Left - "S", Middle-left - "F", Middle-right - "J" or Right - "L"). </p>'
+        //             + '<p style="text-align: left"><u>Remember that:</u><br> 1) How rewarding each location or icon can slowly change. <br> 2) Pay attention to whether in the current step choice should be made according to "Icon" or "location". <br> 3) You can not learn about one option from choosing another one.</p>'
+        //             + '<p style="text-align: center"><br><b>Please do your best to win as many coins as possible! We find that people who pay attention recieve higher bonuses.</b><br></p>'
+        //             + '<p><b>Press SPACE to start</b></p>'
+        //         return start_block_str;
+        //     },
+        //     choices: [' '],
+        //     post_trial_gap: 1000,
+        //     data: {
+        //         block: function () { return block },
+        //         block: function () { return block }
+        //     },
+        //     on_finish: function () { document.querySelector('head').insertAdjacentHTML('beforeend', '<style id="cursor-toggle"> html { cursor: none; } </style>') },
+        // }
+
+        var start_block_location = {
+            type: jsPsychHtmlKeyboardResponse,
+            stimulus: function () {
+                if (locationBlockCount === 0) {
+                    return '<p style="text-align: center"><b>We will now start the first "Hand" block</b></p>' +
+                        '<p style="text-align: center">Use "S", "F", "H", "K" to pick a location.</p>' +
+                        '<p style="text-align: left"><u>Remember that:</u><br>' +
+                        '1) Location payoffs slowly change.<br>' +
+                        '2) Ignore icons when trying to decide which response key you prefer.<br>' +
+                        '3) You can only learn about an option by choosing it.</p>' +
+                        '<p style="text-align: center"><b>Press SPACE to start</b></p>';
+                }
+                return '';
+            },
+            choices: function () {
+                return locationBlockCount === 0 ? [' '] : 'NO_KEYS';
+            },
+            trial_duration: function () {
+                return locationBlockCount === 0 ? null : 0;
+            },
+            post_trial_gap: 1000,
+            data: { block: () => block },
+            on_finish: function () {
+                locationBlockCount++;
+                // re‐hide the cursor
+                document.querySelector('head')
+                    .insertAdjacentHTML(
+                        'beforeend',
+                        '<style id="cursor-toggle"> html { cursor: none; } </style>'
+                    );
+            }
+        };
+
+        // var start_block_icon = {
+        //     type: jsPsychHtmlKeyboardResponse,
+        //     stimulus: function () {
+        //         if (iconBlockCount === 0) {
+        //             return '<p style="text-align: center"><b>We will now start the first "Eye" block</b></p>' +
+        //                 '<p style="text-align: center">Use only "F" or "H" to pick an icon.</p>' +
+        //                 '<p style="text-align: left"><u>Remember that:</u><br>' +
+        //                 '1) Icon payoffs slowly change.<br>' +
+        //                 '2) Ignore locations when trying to decide which icon you prefer<br>' +
+        //                 '3) You can only learn about an option by choosing it.</p>' +
+        //                 '<p style="text-align: center"><b>Press SPACE to start</b></p>';
+        //         }
+        //         return '';
+        //     },
+        //     choices: function () {
+        //         return iconBlockCount === 0 ? [' '] : 'NO_KEYS';
+        //     },
+        //     trial_duration: function () {
+        //         return iconBlockCount === 0 ? null : 0;
+        //     },
+        //     post_trial_gap: 1000,
+        //     data: { block: () => block },
+        //     on_finish: function () {
+        //         if (block_order[block] === 'Icon') {
+        //             iconBlockCount++;
+        //         }
+        //         document.querySelector('head')
+        //             .insertAdjacentHTML(
+        //                 'beforeend',
+        //                 '<style id="cursor-toggle"> html { cursor: none; } </style>'
+        //             );
+        //     }
+        // };
+
+
+        // var exp_stimuli = {
+        //     type: jsPsychHtmlKeyboardResponse,
+        //     stimulus: function () {
+        //         return draw_show_locations(test_deck)
+        //     },
+        //     choices: "ALL_KEYS",
+        //     trial_duration: 6000,
+        //     data: {
+        //         phase: 'exp', trial_name: 'stimuli', trial_num: function () { return current_exp_trial },
+        //         block: function () { return block }
+        //     },
+        //     on_finish: function (data) {
+        //         data.location_first_icon = location_first_icon
+        //         data.location_second_icon = location_second_icon
+        //     }
+        // }
+
+        // var exp_choice = {
+        //     type: jsPsychHtmlKeyboardResponse,
+        //     stimulus: show_choice_locations,
+        //     choices: "NO_KEYS",
+        //     trial_duration: 750,
+        //     data: {
+        //         phase: 'exp', trial_name: 'choice', trial_num: function () { return current_exp_trial },
+        //         block: function () { return block }
+        //     },
+        //     on_finish: function (data) {
+
+        //     }
+        // }
+
+        var exp_stimuli_location = {
+            type: jsPsychHtmlKeyboardResponse,
+            stimulus: function () {
+                return draw_show_locations(test_deck_locations);
+            },
+            choices: "ALL_KEYS",
+            trial_duration: 6000,
+            data: {
+                phase: 'exp',
+                trial_name: 'stimuli',
+                trial_num: function () { return current_exp_trial; },
+                block: function () { return block; }
+            },
+            on_finish: function (data) {
+                data.location_first_icon = location_first_icon;
+                data.location_second_icon = location_second_icon;
+            }
+        };
+
+        var exp_choice_location = {
+            type: jsPsychHtmlKeyboardResponse,
+            stimulus: show_choice_locations,
+            choices: "NO_KEYS",
+            trial_duration: 750,
+            data: {
+                phase: 'exp',
+                trial_name: 'choice',
+                trial_num: function () { return current_exp_trial; },
+                block: function () { return block; }
+            }
+        };
+
+        // var exp_stimuli_icon = {
+        //     type: jsPsychHtmlKeyboardResponse,
+        //     stimulus: function () {
+        //         return draw_show_icons(test_deck);
+        //     },
+        //     choices: "ALL_KEYS",
+        //     trial_duration: 6000,
+        //     data: {
+        //         phase: 'exp',
+        //         trial_name: 'stimuli',
+        //         trial_num: function () { return current_exp_trial; },
+        //         block: function () { return block; }
+        //     }
+        // };
+
+        // var exp_choice_icons = {
+        //     type: jsPsychHtmlKeyboardResponse,
+        //     stimulus: show_choice_icons,
+        //     choices: "NO_KEYS",
+        //     trial_duration: 750,
+        //     data: {
+        //         phase: 'exp',
+        //         trial_name: 'choice',
+        //         trial_num: function () { return current_exp_trial; },
+        //         block: function () { return block; }
+        //     }
+        // };
+
+
+        var exp_reward = {
+            type: jsPsychHtmlKeyboardResponse,
+            stimulus: function () {
+                return show_reward(current_exp_trial);
+            },
+            choices: "NO_KEYS",
+            trial_duration: 1000,
+            data: {
+                phase: 'exp',
+                trial_name: 'reward',
+                trial_num: function () { return current_exp_trial; },
+                block: function () { return block; }
+            },
+            on_finish: function (data) {
+                data.block_type = "Location";
+                data.location_selected = location_selected;
+                data.icon_selected = (icon_selected !== null) ? getIconColorName(icon_selected) : null;
+                data.location_first_icon = location_first_icon;
+                data.location_second_icon = location_second_icon;
+                data.icon_offered_1 = getIconColorName(icon_offered_1);
+                data.icon_offered_2 = getIconColorName(icon_offered_2);
+                data.location_offered_1 = location_offered_1;
+                data.location_offered_2 = location_offered_2;
+                data.reward = reward;
+                data.prob_reward_selected = prob_reward_selected;
+                data.prob_reward_not_selected = prob_reward_not_selected;
+                data.prob_reward_relevant_1 = Prob_reward_relevant_1;
+                data.prob_reward_relevant_2 = Prob_reward_relevant_2;
+                data.prob_reward_relevant_3 = Prob_reward_relevant_3;
+                data.prob_reward_relevant_4 = Prob_reward_relevant_4;
+                data.respond_faster_message = respond_faster_message;
+                data.wrong_key_selected = wrong_key_selected;
+                data.condition_random_walk = condition_random_walk;
+                current_exp_trial += 1;
+            }
+        };
+
+
+        var finish_block = {
+            type: jsPsychHtmlKeyboardResponse,
+            stimulus: function () {
+                var finish_block_string = '';
+                if (block != 3) {
+                    finish_block_string += '<p><b>Good job!</b></p>';
+                    // Add the total rewards so far
+                    finish_block_string += '<p style="text-align: center">You have gained so far ' + sum_of_rewards + ' coins!</p>';
+                    finish_block_string += '<p style="text-align: center">You can stretch a little and take a short break while sitting in front of the screen, if needed.</p>';
+                    finish_block_string += '<br><br><br><b>Press SPACE to continue</b>';
+                }
+                // When block == 3, finish_block_string remains empty
+                return finish_block_string;
+            },
+            choices: function () {
+                if (block != 3) {
+                    return [' ']; // Wait for the space bar press
+                } else {
+                    return 'NO_KEYS'; // Proceed immediately without waiting for a key press
+                }
+            },
+            trial_duration: function () {
+                if (block != 3) {
+                    return null; // Wait indefinitely for a response
+                } else {
+                    return 500; // End the trial immediately
+                }
+            },
+            post_trial_gap: 1000,
+            on_finish: function () {
+                block += 1;
+            }
+        };
+
+
+        var finish_learning = {
+            on_start: function () {
+                while (document.querySelector('#cursor-toggle') != null)
+                    document.querySelector('#cursor-toggle').remove()
+            },
+            type: jsPsychHtmlButtonResponse,
+            stimulus: function () {
+                return "<p><b>Congratulations! You successfully finished this part of the task.</b><br>"
+                    + 'You have earned a total of ' + sum_of_rewards + ' coins!<br>'
+                    + "<b>REMEMBER:</b> You will be paid only after completing the second part of the task tomorrow. <br></p>"
+            },
+            choices: ["Click here to complete this part of the study"]
+        }
+
+
+        /*----------------------------------------------------
+        Define timeline for location and icon parts
+        ----------------------------------------------------*/
+
+        var location_block_timeline = [
+            fixation_locations_loc_block,
+            state_locations,
+            exp_stimuli_location,   // calls draw_show_locations(test_deck_locations)
+            exp_choice_location,    // calls show_choice_locations
+            exp_reward             // unchanged
+        ];
+
+        // var icon_block_timeline = [
+        //     fixation_icons_loc_block,  // ← now two-slot fixation
+        //     state_icons,
+        //     exp_stimuli_icon,
+        //     exp_choice_icons,
+        //     exp_reward
+        // ];
+
+        /*----------------------------------------------------
+        Demo & instructions
+        ----------------------------------------------------*/
+
+        var demo_procedure = {
+            timeline: [fixation_locations_loc_block, state_locations, practice_stimuli, practice_choice, practice_reward],
+            repetitions: 4  // practice = 8 trials
+        };
+
+        var instructions_timeline = {
+            timeline: [instructions_locations, start_practice, demo_procedure, start_instructions_test, instructions_test, loop_timeline]
+        };
+
+        // timeline.push(instructions_timeline);
+
+        /*----------------------------------------------------
+         Dynamic construction of the four experimental blocks
+         (each block runs 50 trials + break)
+        ----------------------------------------------------*/
+
+        // build an array of four block‐objects, each one:
+        //   1) start_block_location
+        //   2) 50 repeats of the correct location/Icon sequence
+        //   3) finish_block
+
+        var test_blocks = Array(4).fill({
+            timeline: [
+                start_block_location,
+                { timeline: location_block_timeline, repetitions: 4 },
+                finish_block
+            ]
+        });
+
+
+        /*----------------------------------------------------
+         Wrap into full procedure
+        ----------------------------------------------------*/
+        var full_procedure = {
+            timeline: [
+                start_exp,                   // move from practice → test
+                ...test_blocks,      // ← spread‐out each of the 4 block objects
+                finish_learning              // end‐of‐session screen
+            ]
+        };
+
+        timeline.push(full_procedure);
+
+        /*  var pavlovia_finish = {
+              type: jsPsychPavlovia,
+              command: "finish",
+              participantId: subject_id,
+              on_finish: function (){
+                          document.body.innerHTML = '<p> Please wait. You will be redirected back to Prolific in a few moments. If you get a pop-up warning you "data may not be saved", you can click "leave", your data have already been saved.</p>';
+                          setTimeout(function () {
+                            location.href = "https://app.prolific.co/submissions/complete?cc=C1ITI3J1";
+                            document.body.innerHTML ='<p>If you are not automatically redirected, please click here: <a href="https://app.prolific.co/submissions/complete?cc=C1ITI3J1">https://app.prolific.co/submissions/complete?cc=C1ITI3J1</a></p><p>If you get a pop-up warning you "data may not be saved", you can click "leave", your data have already been saved.</p>';
+                          }, 5000);
+                        }
+              };
+        timeline.push(pavlovia_finish);*/
+
+        // jsPsych.run(timeline);
+
+        jsPsych
+            .run(timeline)
+            .then(() => {
+                // once everything's done, grab your CSV and trigger your existing download helper
+                const csv = jsPsych.data.get().csv();
+                download_csv(csv);
+            });
+
+
+    </script>
+
+</body>
+
+</html>
