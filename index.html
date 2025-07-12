@@ -1306,7 +1306,7 @@
 
         var demo_procedure = {
             timeline: [fixation_locations_loc_block, state_locations, practice_stimuli, practice_choice, practice_reward],
-            repetitions: 4  // practice = 8 trials
+            repetitions: 8  // practice = 8 trials
         };
 
         var instructions_timeline = {
@@ -1328,7 +1328,7 @@
         var test_blocks = Array(4).fill({
             timeline: [
                 start_block_location,
-                { timeline: location_block_timeline, repetitions: 4 },
+                { timeline: location_block_timeline, repetitions: 50 },
                 finish_block
             ]
         });
