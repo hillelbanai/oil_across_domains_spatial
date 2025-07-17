@@ -219,6 +219,7 @@
             ],
             css_classes: ['white-content']
         }
+
         var if_color_blind = {
             type: jsPsychHtmlButtonResponse,
             stimulus: "<p>Sorry. You made a mistake.<br>"
@@ -234,6 +235,7 @@
         };
 
         var to_repeat_color_blind;
+
         var check_answers_color_blindness = {
             timeline: [if_color_blind],
             conditional_function: function () {
@@ -256,12 +258,14 @@
                 return to_repeat_color_blind
             }
         }
+
         finish_color_blind =
         {
             type: jsPsychHtmlButtonResponse,
             stimulus: "<p>Great! You can now continue to the next part of the study.</p>",
             choices: ["Continue"]
         }
+
         var color_blind_loop = {
             timeline: [test_color_blindness, color_blindness, check_answers_color_blindness],
             loop_function: function () {
@@ -272,6 +276,7 @@
                 }
             }
         }
+
         timeline.push(color_blind_loop)
 
         /*----------------------------------------------------
@@ -302,7 +307,7 @@
             respond_faster_message,
             wrong_key_selected;
 
-            var FB_matrix1 = []; //first option for random walk
+        var FB_matrix1 = []; //first option for random walk
         FB_matrix1[0] = [0.328, 0.351, 0.321, 0.315, 0.318, 0.331, 0.292, 0.298, 0.326, 0.297, 0.299, 0.325, 0.326, 0.351, 0.388, 0.333, 0.305, 0.285,
                          0.266, 0.278, 0.265, 0.275, 0.269, 0.233, 0.232, 0.235, 0.225, 0.225, 0.254, 0.228, 0.263, 0.263, 0.229, 0.256, 0.257, 0.22,
                          0.243, 0.219, 0.199, 0.199, 0.171, 0.163, 0.17, 0.179, 0.206, 0.222, 0.224, 0.232, 0.217, 0.195, 0.205, 0.187, 0.167, 0.161,
@@ -388,7 +393,7 @@
                          0.825, 0.838, 0.834, 0.85, 0.85, 0.818, 0.829, 0.85, 0.85, 0.836, 0.799, 0.792, 0.773, 0.752, 0.722, 0.695, 0.687, 0.655, 0.648, 0.645, 0.64, 0.624, 0.642, 0.653, 0.639, 0.663, 
                          0.647, 0.673, 0.692, 0.692, 0.704, 0.738, 0.7, 0.704, 0.725, 0.712, 0.731, 0.735, 0.734, 0.721, 0.72, 0.714, 0.708, 0.707, 0.725, 0.692, 0.68]
 
-        // 1. Figure out which counterbalance the subject is in
+        // Figure out which counterbalance the subject is in
         var last_letter = subject_id[subject_id.length - 1];
         // Define groups
         var group_1 = ['a', 'b', 'c', '0', '1', '2', '3', '4'];
@@ -410,10 +415,7 @@
             counterbalance = 2;
         }
 
-        // 2. Assign block order deterministically
-        // var block_order = ['Location', 'Location', 'Location', 'Location'];
-
-        // 3. Determine random-walk condition based on counterbalance or random for local testing
+        // Determine random-walk condition based on counterbalance or random for local testing
         var condition_random_walk;
         if (subject_id === 'local') {
             // For local testing, randomly choose
@@ -423,7 +425,7 @@
             condition_random_walk = counterbalance;
         }
 
-        // 4. Plug in the matrices based on that random flip
+        // Plug in the matrices based on that random flip
         var FB_matrix = (condition_random_walk === 1) ? FB_matrix1 : FB_matrix2;
         // Practice trials use the opposite random walk
         var FB_matrix_practice = (condition_random_walk === 1) ? FB_matrix2 : FB_matrix1;
@@ -440,7 +442,7 @@
                 }
             },
             type: jsPsychInstructions,
-            pages: ["<p style='text-align:center; font-size: 20px'><b><u>Welcome to the Coin-Choice Game</u></b></p>"
+            pages: ["<p style='text-align:center; font-size: 20px'><b><u>Welcome to the CoinMax Game</u></b></p>"
                 + "<p style='font-size: 20px'>You will be compensated at a rate of £6 per hour for completing this study.</p>"
                 + "<p style='font-size: 20px'>In addition, you have the opportunity to earn an extra £1 based on your coin earnings in the game.</b></p>"
                 + "<p style='font-size: 20px'><u>Feel free to navigate between screens using the keyboard's left and right arrows or the buttons provided below.</u></p>",
@@ -563,7 +565,9 @@
                 + "Thank you for your patience!",
             choices: ['Try again'],
         }
+
         var to_repeat;
+        
         var check_answers = {
             timeline: [if_trial, instructions_repeat, instructions_test],
             conditional_function: function () {
@@ -639,7 +643,6 @@
             const mid_left_with_tag = `<img class='location_middle_left' src='${mid_left_location}'>`;
             const mid_right_with_tag = `<img class='location_middle_right' src='${mid_right_location}'>`;
             const right_with_tag = `<img class='location_right'       src='${right_location}'>`;
-            // const state = `<img class='state_location'       src='images/state/Location.png'>`;
 
             return left_with_tag + mid_left_with_tag + mid_right_with_tag + right_with_tag;
         }
@@ -662,7 +665,6 @@
                 "<img class='location_middle_left' src='" + background + "'>",
                 "<img class='location_middle_right' src='" + background + "'>",
                 "<img class='location_right'       src='" + background + "'>",
-                // "<img class='state_location'       src='images/state/Location.png'>"
             ];
 
             // did they pick one of the two valid locations?
@@ -698,99 +700,7 @@
                 + location_tags[1]
                 + location_tags[2]
                 + location_tags[3];
-            // + location_tags[4];
         }
-
-
-        /*---------------------------------------------------- 
-        Functions for Icon Blocks
-        ------------------------------------------------------*/
-
-        // function draw_show_icons(deck) {
-        //     // record globals
-        //     block_type = 'Icon';
-        //     // 1) build pool
-        //     let pool = deck.map((_, i) => i);
-        //     // 2) exclude previous‐block icons if needed
-        //     if (block_order[0] === 'location') {
-        //         const used = block_icons.concat(remaining_icons);
-        //         pool = pool.filter(i => !used.includes(i));
-        //     }
-        //     // 3) fallback
-        //     if (pool.length < 2) pool = deck.map((_, i) => i);
-        //     // 4) sample two fresh cards
-        //     icons = jsPsych.randomization.sampleWithoutReplacement(pool, 2);
-        //     // they always sit in slots 1 & 2
-        //     locs = [1, 2];
-
-        //     // record what's on offer
-        //     icon_offered_1 = icons[0];
-        //     icon_offered_2 = icons[1];
-        //     location_offered_1 = locs[0];
-        //     location_offered_2 = locs[1];
-        //     location_first_icon = locs[0];  // Location where first icon appears
-        //     location_second_icon = locs[1]; // Location where second icon appears
-
-        //     // build icon_locs & show_icon_locs
-        //     icon_locs = [-1, -1, -1, -1];
-        //     icon_locs[locs[0]] = icons[0];
-        //     icon_locs[locs[1]] = icons[1];
-
-        //     show_icon_locs = [filled_background, filled_background, filled_background, filled_background];
-        //     show_icon_locs[locs[0]] = deck[icons[0]];
-        //     show_icon_locs[locs[1]] = deck[icons[1]];
-
-        //     // render only the two center slots + eye
-        //     const mid_left_with_tag = `<img class='location_middle_left'  src='${show_icon_locs[1]}'>`;
-        //     const mid_right_with_tag = `<img class='location_middle_right' src='${show_icon_locs[2]}'>`;
-        //     // const state = `<img class='state_icon'          src='images/state/Icon.png'>`;
-
-        //     return mid_left_with_tag + mid_right_with_tag;
-        // }
-
-        // function show_choice_icons() {
-        //     invalid = false;
-        //     // Initialize flags for this trial
-        //     respond_faster_message = 0;
-        //     wrong_key_selected = 0;
-
-        //     last_choice = jsPsych.data.getLastTrialData().values()[0].response;
-        //     location_selected = key_to_index[last_choice];
-        //     icon_selected = icon_locs[location_selected];
-
-        //     // two center blanks + the eye‐icon
-        //     location_tags = [
-        //         "<img class='location_middle_left'  src='" + background + "'>",
-        //         "<img class='location_middle_right' src='" + background + "'>",
-        //         // "<img class='state_icon'          src='images/state/Icon.png'>"
-        //     ];
-
-        //     // only positions 1 or 2 are legal here
-        //     if (location_selected === 1 || location_selected === 2) {
-        //         const tagIndex = location_selected - 1;
-        //         const other_loc = tagIndex === 0 ? 2 : 1;
-        //         const to_show = show_icon_locs[location_selected];
-        //         icon_not_selected = icon_locs[other_loc];
-        //         location_not_selected = other_loc;
-        //         location_tags[tagIndex] = location_tags[tagIndex].replace(background, to_show);
-        //     }
-        //     else {
-        //         // WRONG key or too slow
-        //         location_selected = null;
-        //         icon_selected = null;
-        //         reward = null;
-        //         invalid = true;
-        //         if (last_choice != null) {
-        //             wrong_key_selected = 1;
-        //             return wrong_key_icon;
-        //         } else {
-        //             respond_faster_message = 1;
-        //             return too_slow;
-        //         }
-        //     }
-
-        //     return location_tags[0] + location_tags[1];
-        // }
 
         /*---------------------------------------------------- 
         ------------------------------------------------------*/
@@ -835,7 +745,6 @@
                 + location_tags[2]
                 + location_tags[3]
                 + reward_to_show;
-            // + location_tags[4];
         }
 
         /*This function downloads the data */
@@ -871,7 +780,7 @@
 
         var start_practice = {
             type: jsPsychHtmlKeyboardResponse,
-            stimulus: '<div><b>We will now do a few practice steps.</b><br><br><u>Please keep your left-hand fingers on <b>"S"</b> and <b>"F"</b> and your right-hand fingers on <b>"H"</b> and <b>"K"</b></u>.<br><br>' +
+            stimulus: "<div><b>We will now do a few practice steps.</b><br><br><u>Please keep your left-hand fingers on <b>'S'</b> and <b>'F'</b> and your right-hand fingers on <b>'H'</b> and <b>'K'</b></u>.<br><br>" +
                 '<img class="example_Keyboard_Practice" src="' + keyboard_images[0] + '">' + '<br><br> <b> Press any key to begin</b></div>',
             post_trial_gap: 1000,
             data: { condition_random_walk: function () { return condition_random_walk } },
@@ -895,18 +804,6 @@
             trial_duration: 1000
         };
 
-        // var fixation_icons_loc_block = {
-        //     type: jsPsychHtmlKeyboardResponse,
-        //     stimulus: function () {
-        //         const midL = "<img class='location_middle_left'  src='" + background + "'>";
-        //         const midR = "<img class='location_middle_right' src='" + background + "'>";
-        //         // const stateIcon = "<img class='state_icon'      src='images/state/Icon.png'>";
-        //         return midL + midR;
-        //     },
-        //     choices: "NO_KEYS",
-        //     trial_duration: 1000
-        // };
-
 
         var state_locations = {
             type: jsPsychHtmlKeyboardResponse,
@@ -914,35 +811,15 @@
                 sampled_state = "Location";
             },
             stimulus: function () {
-                // draw all four "empty" backgrounds
                 const left = "<img class='location_left'        src='" + background + "'>";
                 const midL = "<img class='location_middle_left' src='" + background + "'>";
                 const midR = "<img class='location_middle_right' src='" + background + "'>";
                 const right = "<img class='location_right'       src='" + background + "'>";
-                // draw the hand icon
-                // const stateIcon = "<img class='state_location' src='images/state/location.png'>";
                 return left + midL + midR + right;
             },
             choices: "NO_KEYS",
             trial_duration: 1000
         };
-
-        // var state_icons = {
-        //     type: jsPsychHtmlKeyboardResponse,
-        //     on_start: function () {
-        //         sampled_state = "Icon";
-        //     },
-        //     stimulus: function () {
-        //         // only show the two center slots, still on the empty background
-        //         const midL = "<img class='location_middle_left'  src='" + background + "'>";
-        //         const midR = "<img class='location_middle_right' src='" + background + "'>";
-        //         // draw the eye icon
-        //         // const stateIcon = "<img class='state_icon' src='images/state/Icon.png'>";
-        //         return midL + midR;
-        //     },
-        //     choices: "NO_KEYS",
-        //     trial_duration: 1000
-        // };
 
         var practice_stimuli = {
             type: jsPsychHtmlKeyboardResponse,
@@ -984,10 +861,10 @@
                 data.reward = reward;
                 data.prob_reward_selected = prob_reward_selected;
                 data.prob_reward_not_selected = prob_reward_not_selected;
-                data.prob_reward_relevant_1 = Prob_reward_relevant_1;
-                data.prob_reward_relevant_2 = Prob_reward_relevant_2;
-                data.prob_reward_relevant_3 = Prob_reward_relevant_3;
-                data.prob_reward_relevant_4 = Prob_reward_relevant_4;
+                data.Prob_reward_1 = Prob_reward_relevant_1;
+                data.Prob_reward_2 = Prob_reward_relevant_2;
+                data.Prob_reward_3 = Prob_reward_relevant_3;
+                data.Prob_reward_4 = Prob_reward_relevant_4;
                 data.respond_faster_message = respond_faster_message;
                 data.wrong_key_selected = wrong_key_selected;
                 data.condition_random_walk = condition_random_walk;
@@ -1006,41 +883,30 @@
                 is_practice = 0;
                 // Randomly assign FB_matrix rows to location locations
                 location_to_fb_row = jsPsych.randomization.shuffle([0, 1, 2, 3]);
+
+                // Save the key-to-row mapping for data analysis
+                var row_keys = {};
+                for (let i = 0; i < location_to_fb_row.length; i++) {
+                    row_keys[location_to_fb_row[i]] = Object.keys(key_to_index)[i];
+                }
+                jsPsych.data.addProperties({
+                    first_row_key: row_keys[0],
+                    second_row_key: row_keys[1],
+                    third_row_key: row_keys[2],
+                    fourth_row_key: row_keys[3]
+                });
             },
         }
-
-        // Old start block, without the differentiating between first block and the rest
-        // var start_block = {
-        //     type: jsPsychHtmlKeyboardResponse,
-        //     stimulus: function () {
-
-        //         start_block_str = 
-        //         '<p style="text-align: center"><b>We will now start the experiment</b></p>' 
-        //         + '<p style="text-align: center">You will have a short break after 50 steps</p>' 
-        //             + '<p style="text-align: center">Use the response key that matches the slot location you wish to select (Left - "S", Middle-left - "F", Middle-right - "J" or Right - "L"). </p>'
-        //             + '<p style="text-align: left"><u>Remember that:</u><br> 1) How rewarding each location or icon can slowly change. <br> 2) Pay attention to whether in the current step choice should be made according to "Icon" or "location". <br> 3) You can not learn about one option from choosing another one.</p>'
-        //             + '<p style="text-align: center"><br><b>Please do your best to win as many coins as possible! We find that people who pay attention recieve higher bonuses.</b><br></p>'
-        //             + '<p><b>Press SPACE to start</b></p>'
-        //         return start_block_str;
-        //     },
-        //     choices: [' '],
-        //     post_trial_gap: 1000,
-        //     data: {
-        //         block: function () { return block },
-        //         block: function () { return block }
-        //     },
-        //     on_finish: function () { document.querySelector('head').insertAdjacentHTML('beforeend', '<style id="cursor-toggle"> html { cursor: none; } </style>') },
-        // }
 
         var start_block_location = {
             type: jsPsychHtmlKeyboardResponse,
             stimulus: function () {
                 if (locationBlockCount === 0) {
                     return '<p style="text-align: center"><b>We will now start the first round of the game</b></p>' +
-                        '<p style="text-align: center">Use "S", "F", "H", "K" to make your choice.</p>' +
+                        "<p style='text-align: center'>Use 'S', 'F', 'H', 'K' to make your choice.</p>" +
                         '<p style="text-align: left"><u>Remember that:</u><br>' +
-                        '1) Keys payoffs slowly change.<br>' +
-                        '2) Ignore the cirlces when trying to decide which response-key you prefer.<br>' +
+                        '1) Keys winning chances slowly change.<br>' +
+                        "2) Make your choices based only on the circle's location, not on its color.<br>" +
                         '3) You can only learn about an option by choosing it.</p>' +
                         '<p style="text-align: center"><b>Press SPACE to start</b></p>';
                 }
@@ -1064,72 +930,6 @@
                     );
             }
         };
-
-        // var start_block_icon = {
-        //     type: jsPsychHtmlKeyboardResponse,
-        //     stimulus: function () {
-        //         if (iconBlockCount === 0) {
-        //             return '<p style="text-align: center"><b>We will now start the first "Eye" block</b></p>' +
-        //                 '<p style="text-align: center">Use only "F" or "H" to pick an icon.</p>' +
-        //                 '<p style="text-align: left"><u>Remember that:</u><br>' +
-        //                 '1) Icon payoffs slowly change.<br>' +
-        //                 '2) Ignore locations when trying to decide which icon you prefer<br>' +
-        //                 '3) You can only learn about an option by choosing it.</p>' +
-        //                 '<p style="text-align: center"><b>Press SPACE to start</b></p>';
-        //         }
-        //         return '';
-        //     },
-        //     choices: function () {
-        //         return iconBlockCount === 0 ? [' '] : 'NO_KEYS';
-        //     },
-        //     trial_duration: function () {
-        //         return iconBlockCount === 0 ? null : 0;
-        //     },
-        //     post_trial_gap: 1000,
-        //     data: { block: () => block },
-        //     on_finish: function () {
-        //         if (block_order[block] === 'Icon') {
-        //             iconBlockCount++;
-        //         }
-        //         document.querySelector('head')
-        //             .insertAdjacentHTML(
-        //                 'beforeend',
-        //                 '<style id="cursor-toggle"> html { cursor: none; } </style>'
-        //             );
-        //     }
-        // };
-
-
-        // var exp_stimuli = {
-        //     type: jsPsychHtmlKeyboardResponse,
-        //     stimulus: function () {
-        //         return draw_show_locations(test_deck)
-        //     },
-        //     choices: "ALL_KEYS",
-        //     trial_duration: 6000,
-        //     data: {
-        //         phase: 'exp', trial_name: 'stimuli', trial_num: function () { return current_exp_trial },
-        //         block: function () { return block }
-        //     },
-        //     on_finish: function (data) {
-        //         data.location_first_icon = location_first_icon
-        //         data.location_second_icon = location_second_icon
-        //     }
-        // }
-
-        // var exp_choice = {
-        //     type: jsPsychHtmlKeyboardResponse,
-        //     stimulus: show_choice_locations,
-        //     choices: "NO_KEYS",
-        //     trial_duration: 750,
-        //     data: {
-        //         phase: 'exp', trial_name: 'choice', trial_num: function () { return current_exp_trial },
-        //         block: function () { return block }
-        //     },
-        //     on_finish: function (data) {
-
-        //     }
-        // }
 
         var exp_stimuli_location = {
             type: jsPsychHtmlKeyboardResponse,
@@ -1163,35 +963,6 @@
             }
         };
 
-        // var exp_stimuli_icon = {
-        //     type: jsPsychHtmlKeyboardResponse,
-        //     stimulus: function () {
-        //         return draw_show_icons(test_deck);
-        //     },
-        //     choices: "ALL_KEYS",
-        //     trial_duration: 6000,
-        //     data: {
-        //         phase: 'exp',
-        //         trial_name: 'stimuli',
-        //         trial_num: function () { return current_exp_trial; },
-        //         block: function () { return block; }
-        //     }
-        // };
-
-        // var exp_choice_icons = {
-        //     type: jsPsychHtmlKeyboardResponse,
-        //     stimulus: show_choice_icons,
-        //     choices: "NO_KEYS",
-        //     trial_duration: 750,
-        //     data: {
-        //         phase: 'exp',
-        //         trial_name: 'choice',
-        //         trial_num: function () { return current_exp_trial; },
-        //         block: function () { return block; }
-        //     }
-        // };
-
-
         var exp_reward = {
             type: jsPsychHtmlKeyboardResponse,
             stimulus: function () {
@@ -1213,22 +984,22 @@
                 data.location_second_icon = location_second_icon;
                 data.icon_offered_1 = getIconColorName(icon_offered_1);
                 data.icon_offered_2 = getIconColorName(icon_offered_2);
-                data.location_offered_1 = location_offered_1;
-                data.location_offered_2 = location_offered_2;
+                data.location_offered_1 = Object.keys(key_to_index)[location_offered_1];
+                data.location_offered_2 = Object.keys(key_to_index)[location_offered_2];
                 data.reward = reward;
                 data.prob_reward_selected = prob_reward_selected;
                 data.prob_reward_not_selected = prob_reward_not_selected;
-                data.prob_reward_relevant_1 = Prob_reward_relevant_1;
-                data.prob_reward_relevant_2 = Prob_reward_relevant_2;
-                data.prob_reward_relevant_3 = Prob_reward_relevant_3;
-                data.prob_reward_relevant_4 = Prob_reward_relevant_4;
+                data.Prob_reward_1 = Prob_reward_relevant_1;
+                data.Prob_reward_2 = Prob_reward_relevant_2;
+                data.Prob_reward_3 = Prob_reward_relevant_3;
+                data.Prob_reward_4 = Prob_reward_relevant_4;
                 data.respond_faster_message = respond_faster_message;
                 data.wrong_key_selected = wrong_key_selected;
                 data.condition_random_walk = condition_random_walk;
+                data.condition_random_walk_practice = (condition_random_walk === 1) ? 2 : 1;
                 current_exp_trial += 1;
             }
         };
-
 
         var finish_block = {
             type: jsPsychHtmlKeyboardResponse,
@@ -1264,7 +1035,6 @@
             }
         };
 
-
         var finish_learning = {
             on_start: function () {
                 while (document.querySelector('#cursor-toggle') != null)
@@ -1279,7 +1049,6 @@
             choices: ["Click here to complete this part of the study"]
         }
 
-
         /*----------------------------------------------------
         Define timeline for location and icon parts
         ----------------------------------------------------*/
@@ -1291,14 +1060,6 @@
             exp_choice_location,    // calls show_choice_locations
             exp_reward             // unchanged
         ];
-
-        // var icon_block_timeline = [
-        //     fixation_icons_loc_block,  // ← now two-slot fixation
-        //     state_icons,
-        //     exp_stimuli_icon,
-        //     exp_choice_icons,
-        //     exp_reward
-        // ];
 
         /*----------------------------------------------------
         Demo & instructions

@@ -209,26 +209,6 @@ img.location_middle_right {
     top: var(--top_location);
 }
 
-
-/* Optionally, make sure the buttons are spaced nicely */
-.jspsych-instructions-nav .jspsych-btn {
-margin: 0 10px;
-}
-
-
-/* Position navigation buttons to avoid bottom 10% of screen */
-.jspsych-instructions-nav {
-position: fixed;
-bottom: 15vh;
-left: 0;
-width: 100%;
-display: flex;
-justify-content: center;
-align-items: center;
-z-index: 1000;
-pointer-events: auto;
-}
-
 /* Ensure buttons are properly spaced and styled */
 .jspsych-instructions-nav .jspsych-btn {
 margin: 0 10px;
