@@ -136,7 +136,8 @@
             'images/instructions/only_two_offered_circles.png',
             'images/instructions/winning_after_choosing.png',
             'images/instructions/loosing_after_choosing.png',
-            'images/instructions/keys_not_available.png']
+            'images/instructions/keys_not_available.png',
+            'images/instructions/blank_locations.png']
 
         var keyboard_images = ['images/examples/new_keyboard_vis.png']
 
@@ -148,7 +149,7 @@
 
         var background = 'images/new_background.png'
 
-        var filled_background = 'images/filled_background.png'
+        var grey_circle = 'images/test/grey.png'
 
         // Color blindness test images
         var color_blindness_image = ['images/color_blindness/1.png', 'images/color_blindness/2.png'];
@@ -198,7 +199,7 @@
         //preload
         var preload = {
             type: jsPsychPreload,
-            images: [instructions_images, keyboard_images, practice_deck, test_deck, reward_images, background, filled_background, color_blindness_image]
+            images: [instructions_images, keyboard_images, practice_deck, test_deck, reward_images, background, grey_circle, color_blindness_image]
         };
 
         timeline.push(preload)
@@ -458,31 +459,36 @@
                 "<p style='text-align:center; font-size: 20px'>Or <b>no coin at all.<br><br><br></b></p>"
                 + "<img class='exampleNoCoin' src='" + instructions_images[1] + "'>",
 
-                "<p style='text-align:center; font-size: 20px'>The task has <b>four response-keys</b>, and each one gives you a coin with a different chance when you choose it.</p>"
+                "<p style='text-align:center; font-size: 20px'>The task has <b>four locations</b>, and each one gives you a coin with a different chance when you choose it.</p>"
+                + "<img class='exampleCircles' src='" + instructions_images[9] + "'>",
+
+                "<p style='text-align:center; font-size: 20px'>To make your selections, you could press one of four response-keys.</p>"
                 + "<img class='example_Keyboard' src='" + instructions_images[3] + "'>",
 
-                "<p style='text-align:center; font-size: 20px'><br><br><br><br>On each step, <b>two</b> out of four circles will appear on the screen at two random locations.</p>"
+                "<p style='text-align:center; font-size: 20px'><br><br><br><br>On each step, you can choose between <b>two</b> available locations.</p>"
+                + "<p style='text-align:center; font-size: 20px'>These locations will be indicated by <b>colored</b> circles on the screen.</p>"
                 + "<img class='exampleCircles' src='" + instructions_images[4] + "'>",
 
-                "<p style='text-align:center; font-size: 20px'><br><br><br><br>You need to select one of the <b>response-keys</b>, by pressing the key where a circle appears, as shown below:</p>"
+                "<p style='text-align:center; font-size: 20px'><br><br><br><br>You need to select one of the offered locations by pressing the response-key, as shown below:</p>"
                 + "<img class='exampleCircles' src='" + instructions_images[4] + "'>",
 
-                "<p style='text-align:center; font-size: 20px'><br><br><br><br>Here for example, you can choose the <b>'F'</b> key, or the <b>'K'</b> key.</b></p>"
+                "<p style='text-align:center; font-size: 20px'><br><br><br><br>Here for example, you can press <b>'F'</b> to select the middle-left location or <b>'K'</b> to select the right location.</b></p>"
                 + "<img class='exampleCircles' src='" + instructions_images[5] + "'>",
 
-                "<p style='text-align:center; font-size: 20px'><br><br><br><br>Note that in this example, you <b>will not</b> be able to choose the “S” or “H” keys, since no circle appears next to them.</p>"
+                "<p style='text-align:center; font-size: 20px'><br><br><br><br>Note that in this example, you <b>will not</b> be able to choose the <b>'S'</b> or <b>'H'</b> keys, since no colored circle appears next to them.</p>"
                 + "<img class='exampleCircles' src='" + instructions_images[8] + "'>",
 
-                "<p style='text-align:center; font-size: 20px'><br><br><br><br>Right after you choose a response-key, you will see <b>whether you won a coin…</b></p>"
+                "<p style='text-align:center; font-size: 20px'><br><br><br><br>Right after you choose a location, you will see <b>whether you won a coin…</b></p>"
                 + "<img class='exampleReward' src='" + instructions_images[6] + "'><br>",
 
                 "<p style='text-align:center; font-size: 20px'><br><br><br><br><b>...or not</b>.</p>"
                 + "<img class='exampleReward' src='" + instructions_images[7] + "'><br>",
 
-                "<p style='text-align:center; font-size: 20px'>Keep in mind that <b>each response-key</b> has a unique chance of giving you a gold coin, <b>which will slowly change over time</b>.</p>"
+                "<p style='text-align:center; font-size: 20px'>Keep in mind that <b>each location</b> has a unique chance of giving you a gold coin.</p>"
+                + "<p style='text-align:center; font-size: 20px'>These winning chances <b>will slowly change over time, so you need to keep on learning</b>.</p>"
                 + "<img class='example_Keyboard' src='" + instructions_images[3] + "'><br>",
 
-                "<p style='text-align:center; font-size: 20px'><b>Only the response-key you choose determine your outcome, and not their location on the screen</b>.</p>"
+                "<p style='text-align:center; font-size: 20px'><b>Only the location you choose determine your outcome, and not the colored circle on the screen</b>.</p>"
                 + "<img class='example_Keyboard' src='" + instructions_images[3] + "'><br>",
 
                 "<p style='text-align:center; font-size: 20px'><b>Your coin earnings in the game will translate to a money bonus.</b></p>",
@@ -490,14 +496,14 @@
                 "<p style='text-align:center; font-size: 20px'><b>Before moving on to the quiz, here are important things to remember that can help you win more coins:</b></p>"
                 + "<img class='exampleCoin' src='" + instructions_images[0] + "'>",
 
-                "<p style='text-align:center; font-size: 20px'>1) How rewarding a response-key is can slowly change throughout the game, much like how the value of market products go up and down.</p>"
+                "<p style='text-align:center; font-size: 20px'>1) How rewarding a location is can slowly change throughout the game, much like how the value of market products go up and down.</p>"
                 + "<p style='font-size: 20px'><b>Keep learning as you play.</b></p>",
 
-                "<p style='text-align:center; font-size: 20px'>2) Each response-key works differently. Some may win more often, some less, or they may all be similar..</p>"
-                + "<p style='font-size: 20px'><b>You can only learn about how rewarding a response-key is by choosing it.</b></p>",
+                "<p style='text-align:center; font-size: 20px'>2) Each location works differently. Some may win more often, some less, or they may all be similar.</p>"
+                + "<p style='font-size: 20px'><b>You can only learn about how rewarding a location is by choosing it.</b></p>",
 
-                "<p style='text-align:center; font-size: 20px'>3) A certain response-key will have the same coin winning chances regardless of its colored circle.</p>"
-                + "<p style='font-size: 20px'><b>The colored-circles appearing on the screen don't affect winning chances.</b></p>",
+                "<p style='text-align:center; font-size: 20px'>3) A location will have the same coin winning chances regardless of the colored circle appearing inside it.</p>"
+                + "<p style='font-size: 20px'><b>The colored-circles appearing on the screen don't affect winning chances. They are just there to mark the two available options.</b></p>",
 
                 
                 "<p style='text-align:center; font-size: 20px'>You will play <b>200 choice steps with 3 breaks</b> during the game.</p>"
@@ -513,11 +519,11 @@
                 }
             },
             type: jsPsychInstructions,
-            pages: ["<p style='text-align:left'>1. There are four response-keys in the game: 'S', 'F', 'H', and 'K'.</p>" +
-                    "<p style='text-align:left'>2. Each step shows circles beside two of those keys; you may choose only a key that has a circle.</p>" +
-                    "<p style='text-align:left'>3. After you press a key, you will see either <b>+1 coin</b> or <b>no coin</b>.</p>" +
-                    "<p style='text-align:left'>4. The key itself determines the coin chance; colored circle or screen position does <i>not</i> change it.</p>" +
-                    "<p style='text-align:left'>5. Every key's chance drifts slowly over time, so keep testing and adapting.</p>" +
+            pages: ["<p style='text-align:left'>1. There are four locations in the game: 'S', 'F', 'H', and 'K'.</p>" +
+                    "<p style='text-align:left'>2. At each step, two locations contain <b>colored circles</b>; you may select only one of these marked locations.</p>" +
+                    "<p style='text-align:left'>3. After you choose a location, you will see either <b>+1 coin</b> or <b>no coin</b>.</p>" +
+                    "<p style='text-align:left'>4. The location determines the coin chance; colored circle does <i>not</i> change it.</p>" +
+                    "<p style='text-align:left'>5. Every location's chance drifts slowly over time, so keep testing and adapting.</p>" +
                     "<p style='text-align:left'>6. If you don't win a coin, it doesn't mean the other available key would have paid.</p>" +
                     "<p style='text-align:left'>7. You'll make 200 choices with three short breaks.</p>" +
                     "<p style='text-align:left'>8. Gather as many coins as you can—your coin count sets your bonus.</p>",
@@ -534,10 +540,10 @@
             stimulus: "<p> <b>Great!</b><br><br>We will now move on to a quick quiz to make sure you understood the instructions. If you make a mistake, you will need to go through them again.<br><br><b>Press any key to continue</b></p>"
         }
         var Q1_2_options = ["2", "4", "6", "8"]
-        var Q3_options = ["True, all keys are always available, regardless of where the circles appear", "False, I can only choose the two response-keys where a circle appears"]
+        var Q3_options = ["True, all locations are always available, regardless of where the circles appear", "False, I can only choose the two locations where a circle appears"]
         var Q4_options = ["I will either win 1 coin or not win any coin", "I can win any value between 0 and 100"]
         var Q5_options = ["True, if one option is good it means the other one is bad", "False, you can learn about an option only by choosing it"];
-        var Q6_options = ["On previous experience I had with the offered response-keys", "On previous experience I had with the offered colored circles"];
+        var Q6_options = ["On previous experience I had with the offered locations", "On previous experience I had with the offered colored circles"];
         var Q7_options = ["True, that is why I should keep on learning", "False, it stays the same along the game"];
         var Q8_options = ["My goal is to earn as many coins as I can", "My goal is to choose each option equally"];
 
@@ -546,13 +552,13 @@
         var instructions_test = {
             type: jsPsychSurveyMultiChoice,
             questions: [
-                { prompt: "How many response-keys are there in total?", name: 'number_keys_total', correct: Q1_2_options[1], options: Q1_2_options, required: true },
-                { prompt: "How many response-keys are offered on each step?", name: 'number_keys_step', correct: Q1_2_options[0], options: Q1_2_options, required: true },
-                { prompt: "On each step, I can choose from all response-keys in the game", name: 'all_keys_step', correct: Q3_options[1], options: Q3_options, required: true },
+                { prompt: "How many locations are there in total?", name: 'number_keys_total', correct: Q1_2_options[1], options: Q1_2_options, required: true },
+                { prompt: "How many locations are offered on each step?", name: 'number_keys_step', correct: Q1_2_options[0], options: Q1_2_options, required: true },
+                { prompt: "On each step, I can choose from all locations in the game", name: 'all_keys_step', correct: Q3_options[1], options: Q3_options, required: true },
                 { prompt: "What will happen after each choice?", name: 'choosen_option_outcome', correct: Q4_options[0], options: Q4_options, required: true },
-                { prompt: "If I won a coin it means the response-keys I did not chose would not have given me a coin", name: 'alternative_option_outcome', correct: Q5_options[1], options: Q5_options, required: true },
+                { prompt: "If I won a coin it means the location I did not chose would not have given me a coin", name: 'alternative_option_outcome', correct: Q5_options[1], options: Q5_options, required: true },
                 { prompt: "What should you base your decision on?", name: 'outcome_relevant_dimension', correct: Q6_options[0], options: Q6_options, required: true },
-                { prompt: "The winning chances of the response-keys will slowly change", name: 'winning_chances_change', correct: Q7_options[0], options: Q7_options, required: true },
+                { prompt: "The winning chances of the locations will slowly change", name: 'winning_chances_change', correct: Q7_options[0], options: Q7_options, required: true },
                 { prompt: "What is the goal of the game?", name: 'game_goal', correct: Q8_options[0], options: Q8_options, required: true },
             ]
         };
@@ -626,7 +632,7 @@
             icon_locs[locs[0]] = icons[0];
             icon_locs[locs[1]] = icons[1];
 
-            show_icon_locs = Array(4).fill(filled_background);
+            show_icon_locs = Array(4).fill(grey_circle);
             // Use practice_deck for practice trials, test_deck for experimental trials
             var current_deck = (typeof is_practice !== 'undefined' && is_practice === 1) ? practice_deck : test_deck;
             show_icon_locs[locs[0]] = current_deck[icons[0]];
@@ -906,7 +912,7 @@
                         "<p style='text-align: center'>Use 'S', 'F', 'H', 'K' to make your choice.</p>" +
                         '<p style="text-align: left"><u>Remember that:</u><br>' +
                         '1) Keys winning chances slowly change.<br>' +
-                        "2) Make your choices based only on the circle's location, not on its color.<br>" +
+                        "2) Make your choices based on the location you prefer, and not based on the color appearing there.<br>" +
                         '3) You can only learn about an option by choosing it.</p>' +
                         '<p style="text-align: center"><b>Press SPACE to start</b></p>';
                 }

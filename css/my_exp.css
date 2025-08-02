@@ -10,7 +10,8 @@ p {
 
 img.fullscreen {
     height: 150px;
-    width: 526px;
+    width: 100%;
+    max-width: 526px;
 }
 
 :root {
@@ -82,14 +83,12 @@ img.fullscreen {
 }
 
 .reward {
-
     margin-left: auto;
     margin-right: auto;
     height: 132px;
     width: 120px;
     position: absolute;
     top: var(--top_reward);
-    /* left: var(--left_reward); */
     left: calc(var(--left_reward) - 10px);
 }
 
@@ -97,6 +96,7 @@ img.fullscreen {
     height: 135px;
     width: 487px;
 }
+
 img.state_icon {
     position: fixed;
     height: 120px;
@@ -104,7 +104,6 @@ img.state_icon {
     top: var(--top_state);
     left: 50%;
     transform: translateX(-50%);
-    /* left: var(--left_state_icon); */
 }
 
 img.state_location {
@@ -114,7 +113,6 @@ img.state_location {
     top: var(--top_state);
     left: 50%;
     transform: translateX(-50%);
-    /* left: var(--left_state_location); */
 }
 
 .example {
@@ -135,13 +133,19 @@ img.state_location {
 }
 
 .exampleCircles {
-    height: 400px;
-    width: 1500px;
+    height: auto;
+    width: 100%;
+    max-width: 1200px;
+    max-height: 400px;
+    object-fit: contain;
 }
 
 .exampleTrial {
-    height: 500px;
-    width: 1500px;
+    height: auto;
+    width: 100%;
+    max-width: 1200px;
+    max-height: 500px;
+    object-fit: contain;
 }
 
 .exampleKeys {
@@ -150,32 +154,50 @@ img.state_location {
 }
 
 .example {
-    height: 200px;
-    width: 977px;
+    height: auto;
+    width: 100%;
+    max-width: 977px;
     margin-right: 5px;
 }
 
 .exampleLoc {
-    height: 223px;
-    width: 960px;
+    height: auto;
+    width: 100%;
+    max-width: 960px;
+    max-height: 223px;
+    object-fit: contain;
 } 
 
 .exampleReward {
-    height: 400px;
-    width: 1500px;
+    height: auto;
+    width: 100%;
+    max-width: 1200px;
+    max-height: 400px;
+    object-fit: contain;
 }
 
 .exampleState {
-    height: 260px;
-    width: 780px;
+    height: auto;
+    width: 100%;
+    max-width: 780px;
+    max-height: 260px;
+    object-fit: contain;
 }
+
 .example_Keyboard {
-    height: 280px;
-    width: 1050px;
+    height: auto;
+    width: 100%;
+    max-width: 1050px;
+    max-height: 280px;
+    object-fit: contain;
 }
+
 .example_Keyboard_Practice {
-    height: 350px;
-    width: 500px;
+    height: auto;
+    width: 100%;
+    max-width: 500px;
+    max-height: 350px;
+    object-fit: contain;
 }
 img.location_left {
     position: fixed;
@@ -211,7 +233,30 @@ img.location_middle_right {
 
 /* Ensure buttons are properly spaced and styled */
 .jspsych-instructions-nav .jspsych-btn {
-margin: 0 10px;
-padding: 8px 16px;
-font-size: 16px;
+    margin: 0 10px;
+    padding: 8px 16px;
+    font-size: 16px;
+}
+
+/* Add responsive breakpoints */
+@media (max-width: 1200px) {
+    .exampleCircles,
+    .exampleTrial,
+    .exampleReward {
+        max-width: 90vw;
+    }
+}
+
+@media (max-width: 768px) {
+    .example_Keyboard,
+    .example_Keyboard_Practice {
+        max-width: 90vw;
+    }
+}
+
+@media (max-width: 480px) {
+    .white-content {
+        padding: 10px;
+        margin: 10px;
+    }
 }
